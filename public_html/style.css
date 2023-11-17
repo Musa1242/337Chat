@@ -1,0 +1,57 @@
+#searchTitleArea {
+    height: 10vh;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchTitle {
+    font-family: Verdana;
+    font-size:40px;
+    font-weight: bold;
+    color:darkblue;
+    margin: 0px;
+}
+
+#searchBody {
+    margin: 0px;
+    background-color:lightgray;
+}
+
+#searchInnerBody {
+    height: 90vh;
+    display: block;
+    position: relative;
+    background-color: lightblue;
+    margin-bottom: 0px;
+}
+
+#searchArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 10%;
+}
+
+#searchBox {
+    width: 200px;
+    margin-right: 5px;
+}
+
+#searchType {
+    height: 20px;
+    width: 60px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+#searchResults {
+    border: 2px solid black;
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 88%;
+    overflow: auto;
+}

@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head lang="en">
+        <meta charset="utf-8"/>
         <title>337chat</title>
+        <link id="cssFile" rel="stylesheet" type="text/css" href="../style.css">
     </head>
-    <body>
-        <h1>This is the user/post search page.</h1>
+    <body id="searchBody">
+        <div id="searchTitleArea">
+            <div id="searchTitle">Search Users/Posts</div>
+        </div>
+        <div id="searchInnerBody">
+            <div id="searchArea">
+                <input type="text" id="searchBox" name="searchBox">
+                <select id="searchType" name="searchType" class="dropdown">
+                    <option value="Users">Users</option>
+                    <option value="Posts">Posts</option>
+                </select>
+                <input type="button" id="searchButton" value="Search"> 
+            </div>
+            <div id="searchResults">
+                <h2>results</h2>
+            </div>
+        </div>
     </body>
 </html>
