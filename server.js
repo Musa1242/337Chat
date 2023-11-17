@@ -15,7 +15,8 @@ var UserSchema = new Schema({
     username: String,
     password: String, // temporary
     hash: Number,
-    salt: Number
+    salt: Number,
+    avatar: String // change if needed
 });
 var User = mongoose.model('User', UserSchema);
 
