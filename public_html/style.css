@@ -91,6 +91,15 @@
     padding: 10px;
 }
 
+#widgetsDiv {
+    display: block;
+    border:2px solid black;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
 #searchBox {
     width: 200px;
     margin-right: 5px;
