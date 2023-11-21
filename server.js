@@ -57,15 +57,15 @@ function authenticate(req, res, next) {
     let c = req.cookies;
     console.log('auth request:');
     console.log(req.cookies);
-    if (c != undefined) {
+    if (c.login != undefined) {
         if (sessions[c.login.username] != undefined && 
         sessions[c.login.username].id == c.login.sessionID) {
             next();
         } else {
-            res.redirect('./public_html/index.html');
+            res.redirect('/index.html');
         }
     }else {
-        res.redirect('./public_html/index.html');
+        res.redirect('/index.html');
     }
 }
 
@@ -89,7 +89,7 @@ app.post('/account/login/', function(req, res) {
             let sid = addSession(usernameIn);
             res.cookie("login", 
                 {username: usernameIn, sessionID: sid},
-                {maxAge: 60000 * 2}); // create a new cookie with 2 minutes life
+                {maxAge: 60000 * 1}); // create a new cookie with 2 minutes life
             res.end('SUCCESS');
         }
     });
@@ -147,7 +147,7 @@ app.post("/app/avatar", upload.single("img"), (req, res) => {
             console.log("Error uploading profile picture: " + err);
         })
     }
-})
+});
 
 app.get("/app/getProfilePic", (req, res) => {
     UserSchema.findOne( {username: req.cookies.login.username} )
@@ -160,5 +160,9 @@ app.get("/app/getProfilePic", (req, res) => {
             res.send(response.avatar);
         }
     })
-})
+});
 
+app.listen(port, () =>
+console.log(
+    `Example app listening at http://127.0.0.1:${port}` // Change this ip address
+));

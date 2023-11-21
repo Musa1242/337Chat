@@ -18,7 +18,7 @@ function addUser() {
     p.then((response) => {
         return response.text();
       }).then((text) => {
-        alert(text);
+        //alert(text);
         console.log(text);
       });
     
@@ -30,8 +30,8 @@ function login() {
 
     let us = document.getElementById('usernameLogin');
     let pw = document.getElementById('passwordLogin');
-    let errorText = document.getElementById('loginError');
-    errorText.innerText = "";
+    //let errorText = document.getElementById('loginError');
+    //errorText.innerText = "";
 
     // change to implement hashing/salting
     let data = {username: us.value, password: pw.value};
@@ -47,7 +47,7 @@ function login() {
       if (text.startsWith('SUCCESS')) {
         window.location.href = './app/home.html'; // Should put home in app folder...
       } else {
-        errorText.innerText = "Issue logging in with that info";
+        //errorText.innerText = "Issue logging in with that info";
         us.value = "";
         pw.value = "";
       }
