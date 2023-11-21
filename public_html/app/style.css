@@ -62,14 +62,18 @@ h3 {
 	margin: 0px 10px 0px 10px;
 }
 
-#changeProfileButton {
+#newPostButton {
 	left: 20%;
 }
 
+#changeProfileButton {
+	left: 40%;
+}
+
 #searchButton {
-	left: 45%;
+	left: 60%;
 }
 
 #loginButton {
-	left: 70%;
+	left: 80%;
 }
