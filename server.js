@@ -21,7 +21,8 @@ var UserSchema = new Schema({
     password: String, // temporary
     hash: Number,
     salt: Number,
-    avatar: String // change if needed
+    avatar: String, // change if needed
+    gender: String
 });
 var User = mongoose.model('User', UserSchema);
 
@@ -122,7 +123,7 @@ app.post('/add/user/', function(req, res) {
     })
 });
 
-app.post("/app/avatar", upload.single("img"), (req, res) => {
+app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html reference
     if (req.file == undefined) {
         UserSchema.findOneAndUpdate(
             {username: req.cookies.login.username},
@@ -161,6 +162,42 @@ app.get("/app/getProfilePic", (req, res) => {
         }
     })
 });
+
+// app.get("/app/funkyAvatar", async (req, res) => {
+//     const uname = req.cookies.login.username;
+//     // Modify as needed to get the gender or other parameters
+//     const gender = 'male'; // Example, adjust as needed
+//     const avatarUrl = `https://funky-pixel-avatars.p.rapidapi.com/api/v1/avatar/generate/user?g=${gender}&uname=${uname}&fe=gif`;
+
+//     try {
+//         const avatarResponse = await fetch(avatarUrl, {
+//             method: 'GET',
+//             headers: {
+//                 'X-RapidAPI-Key': 'e597977b3amsh58f50df5ea831ddp18c578jsn7d9ca425de95',
+//                 'X-RapidAPI-Host': 'funky-pixel-avatars.p.rapidapi.com'
+//             }
+//         });
+//         const avatarResult = await avatarResponse.text();
+
+//         User.findOneAndUpdate(
+//             { username: uname },
+//             { $set: { avatar: avatarResult } }
+//         )
+//         .then(() => {
+//             res.send(avatarResult); // Send the avatar URL to the client
+//         })
+//         .catch(err => {
+//             console.error("Error updating profile picture: " + err);
+//             res.status(500).send(err);
+//         });
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send(error);
+//     }
+// });
+
+
 
 app.listen(port, () =>
 console.log(

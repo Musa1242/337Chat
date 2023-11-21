@@ -92,7 +92,7 @@ function removeProfilePic() {
 }
 
 function fetchProfilePic() { 
-    document.getElementById("avatar").innerHTML = ""; ///html reference, html needed
+    document.getElementById("avatar").innerHTML = ""; ///html reference, html needed, also if we add funky avatar it should be modify
     let url = "/app/getProfilePic";
     fetch(url)
     .then( (response) => {
@@ -112,21 +112,20 @@ function search() {
     window.location.href = '/app/search.html';
 }
 /////////funky pixel avatar generate code based on gender and username ,we can try later
-// const fetch = require('node-fetch');
+// function fetchFunkyAvatar() {
+//     document.getElementById("avatar").innerHTML = "Loading avatar..."; // a loading message
 
-// const url = 'https://funky-pixel-avatars.p.rapidapi.com/api/v1/avatar/generate/user?g=male&uname=kusingh&fe=gif';
-// const options = {
-//   method: 'GET',
-//   headers: {
-//     'X-RapidAPI-Key': 'e597977b3amsh58f50df5ea831ddp18c578jsn7d9ca425de95',
-//     'X-RapidAPI-Host': 'funky-pixel-avatars.p.rapidapi.com'
-//   }
-// };
-
-// try {
-// 	const response = await fetch(url, options);
-// 	const result = await response.text();
-// 	console.log(result);
-// } catch (error) {
-// 	console.error(error);
+//     fetch("/app/funkyAvatar")
+//     .then(response => response.text())
+//     .then(avatarUrl => {
+//         if (avatarUrl) {
+//             document.getElementById("avatar").innerHTML = `<img src="${avatarUrl}" alt="Your Funky Avatar" width="450px" height="450px">`;
+//         } else {
+//             document.getElementById("avatar").innerHTML = "<p>Failed to load Funky Avatar.</p>";
+//         }
+//     })
+//     .catch(error => {
+//         console.error("Error fetching Funky Avatar:", error);
+//         document.getElementById("avatar").innerHTML = "<p>Error fetching avatar.</p>";
+//     });
 // }
