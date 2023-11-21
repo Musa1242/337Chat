@@ -107,6 +107,10 @@ function fetchProfilePic() {
         }
     })
 }
+
+function search() {
+    window.location.href = '/app/search.html';
+}
 /////////funky pixel avatar generate code based on gender and username ,we can try later
 // const fetch = require('node-fetch');
 
