@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" href="login.css">
+    </head>
+
+    <body>
+        <div id="logo">
+            <img src="337Chat_logo.png"
+            alt="Picture of the logo for the app"
+            width="500px"
+            height="200px">
+        </div>
+
+        <div id="signUp">
+            <h2>SIGN UP</h2>
+
+            <label for="usernameCreate">Username</label>
+            <input type="text" id="usernameCreate" name="usernameCreate">
+
+            <label for="passwordCreate">Password</label>
+            <input type="password" id="passwordCreate" name="passwordCreate">
+
+            <input type="button" onclick="addUser();" id="signButton" value="SIGN UP">
+        </div>
+
+        <div id="login">
+            <h2>LOGIN</h2>
+
+            <label for="usernameLogin">Username</label>
+            <input type="text" id="usernameLogin" name="usernameLogin">
+
+            <label for="passwordLogin">Password</label>
+            <input type="password" id="passwordLogin" name="passwordLogin">
+
+            <input type="button" onclick="login();" id="loginButton" value="LOGIN">
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,79 @@
+body {
+	background-color: grey;
+	text-align: center;
+}
+
+h2 {
+	font-size: 35px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
+#avatar {
+	position: fixed;
+	left: 20px;
+}
+#profile {
+	text-align: left;
+	border: 2px solid black;
+	position: fixed;
+	left: 240px;
+	top: 20px;
+	padding: 10px;
+}
+
+#logo {
+	position: fixed;
+	right: 20px;
+}
+
+.feeds {
+	width: 45%;
+	height: 68%;
+	color: white;
+	background-color: rgb(81,105,145);
+}
+
+#ownFeed {
+	position: fixed;
+	left: 30px;
+	top: 25%;
+}
+
+#friendFeed {
+	position: fixed;
+	right: 30px;
+	top: 25%;
+}
+
+.post {
+	margin: auto;
+	border: 2px solid black;
+	width: 75%;
+	padding: 5px;
+}
+
+.button {
+	font-size: 20px;
+	position: fixed;
+	bottom: 10px;
+	margin: 0px 10px 0px 10px;
+}
+
+#newPostButton {
+	left: 20%;
+}
+
+#changeProfileButton {
+	left: 40%;
+}
+
+#searchButton {
+	left: 60%;
+}
+
+#loginButton {
+	left: 80%;
+}

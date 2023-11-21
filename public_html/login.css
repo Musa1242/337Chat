@@ -1,0 +1,57 @@
+body {
+    background-color: grey;
+    text-align: center;
+}
+
+#signUp {
+    background-color: white;
+    box-sizing: border-box;
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 35%;
+    left: 22.5%;
+    width: 25%;
+    height: 60%;
+    padding-left: 40px;
+}
+
+#login {
+    background-color: white;
+    box-sizing: border-box;
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 35%;
+    left: 52.5%;
+    width: 25%;
+    height: 60%;
+    padding-left: 40px;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+#signButton {
+    font-size: 20px;
+    width: 150px;
+    color: white;
+    background-color: rgb(81, 105, 145);
+}
+
+#loginButton {
+    font-size: 20px;
+    width: 150px;
+    color: white;
+    background-color: rgb(81, 105, 145);
+}
+
+/* img {
+    
+} */
