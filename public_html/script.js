@@ -100,7 +100,7 @@ function fetchProfilePic() {
     })
     .then( (response) => {
         if (response == "") {
-            document.getElementById("avatar").innerHTML += "<img src='../img/default.png' alt='Your profile picture' width='450px' height='450px'>";
+            document.getElementById("avatar").innerHTML += "<img src='../img/default.jpg' alt='Your profile picture' width='450px' height='450px'>";
         }
         else {
             document.getElementById("avatar").innerHTML += "<img src='../img/" + response + "' alt='Your profile picture' width='450px;' height='450px'>";
