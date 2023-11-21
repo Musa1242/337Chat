@@ -53,3 +53,76 @@ function login() {
       }
     });
   }
+
+
+function setProfilePic() {
+    document.getElementById("imgStatus").innerText = ""; ///html reference, html needed
+    if (document.getElementById("img").files.length == 0) {
+        document.getElementById("imgStatus").innerText = "Cannot leave field empty";
+    }
+    else {
+        let formData = new FormData();
+        formData.append("img", document.getElementById("img").files[0]);
+        let url = "/app/avatar";
+        fetch(url,
+            {
+                method: "POST",
+                body: formData
+            })
+        .then( (response) => {
+            document.getElementById("img").value = "";
+            setTimeout(fetchProfilePic, 200);
+        })
+    }
+}
+
+function removeProfilePic() {
+    document.getElementById("img").value = ""; ///html reference, html needed
+    let formData = new FormData();
+    formData.append("img", document.getElementById("img").files[0]);
+    let url = "/app/avatar";
+    fetch(url,
+        {
+            method: "POST",
+            body: formData
+        })
+    .then( (response) => {
+        setTimeout(fetchProfilePic, 200);
+    })
+}
+
+function fetchProfilePic() { 
+    document.getElementById("avatar").innerHTML = ""; ///html reference, html needed
+    let url = "/app/getProfilePic";
+    fetch(url)
+    .then( (response) => {
+        return response.text();
+    })
+    .then( (response) => {
+        if (response == "") {
+            document.getElementById("avatar").innerHTML += "<img src='../img/default.png' alt='Your profile picture' width='450px' height='450px'>";
+        }
+        else {
+            document.getElementById("avatar").innerHTML += "<img src='../img/" + response + "' alt='Your profile picture' width='450px;' height='450px'>";
+        }
+    })
+}
+/////////funky pixel avatar generate code based on gender and username ,we can try later
+// const fetch = require('node-fetch');
+
+// const url = 'https://funky-pixel-avatars.p.rapidapi.com/api/v1/avatar/generate/user?g=male&uname=kusingh&fe=gif';
+// const options = {
+//   method: 'GET',
+//   headers: {
+//     'X-RapidAPI-Key': 'e597977b3amsh58f50df5ea831ddp18c578jsn7d9ca425de95',
+//     'X-RapidAPI-Host': 'funky-pixel-avatars.p.rapidapi.com'
+//   }
+// };
+
+// try {
+// 	const response = await fetch(url, options);
+// 	const result = await response.text();
+// 	console.log(result);
+// } catch (error) {
+// 	console.error(error);
+// }

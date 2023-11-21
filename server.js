@@ -4,6 +4,11 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const crypto = require('crypto');
 const port = 80;
+const app = express()
+app.use(express.json());
+app.use(cookieParser());
+const multer = require("multer");
+const upload = multer( {dest: __dirname + '/public_html/img'} );
 
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
@@ -45,9 +50,7 @@ function removeSessions() {
 
 setInterval(removeSessions, 2000);
 
-const app = express()
-app.use(express.json());
-app.use(cookieParser());
+
 
 function authenticate(req, res, next) {
 
@@ -118,4 +121,44 @@ app.post('/add/user/', function(req, res) {
         }
     })
 });
+
+app.post("/app/avatar", upload.single("img"), (req, res) => {
+    if (req.file == undefined) {
+        UserSchema.findOneAndUpdate(
+            {username: req.cookies.login.username},
+            {$unset: {avatar: ""} }
+        )
+        .then( (response) => {
+            res.send("Successfully removed profile picture");
+        })
+        .catch( (err) => {
+            console.log("Error removing profile picture: " + err);
+        })
+    }
+    else {
+        UserSchema.findOneAndUpdate(
+            {username: req.cookies.login.username},
+            {$set: {avatar: req.file.filename} }
+        )
+        .then( (response) => {
+            res.send("Successfully set profile picture for user");
+        })
+        .catch( (err) => {
+            console.log("Error uploading profile picture: " + err);
+        })
+    }
+})
+
+app.get("/app/getProfilePic", (req, res) => {
+    UserSchema.findOne( {username: req.cookies.login.username} )
+    .then( (response) => {
+        if (response == null) {
+            console.log("it's null");
+            res.send(undefined);
+        }
+        else {
+            res.send(response.avatar);
+        }
+    })
+})
 
