@@ -52,6 +52,12 @@ input {
     background-color: rgb(81, 105, 145);
 }
 
+#loginError {
+    font-size: 15px;
+    color: red;
+    margin-bottom: 10px;
+}
+
 /* img {
     
 } */
