@@ -21,9 +21,40 @@ var UserSchema = new Schema({
     hash: String,
     salt: Number,
     avatar: String, // change if needed
-    gender: String
+    gender: String,
+    friends: [mongoose.Schema.Types.ObjectId],
+    posts: [mongoose.Schema.Types.ObjectId]
+    //age: Number, if needed
 });
 var User = mongoose.model('User', UserSchema);
+const Comment = new mongoose.model("comment", new mongoose.Schema(
+    {
+        username: String,
+        content: String,
+    }
+));
+
+
+const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will definitely add to this more as needed
+    {
+        poster: String,
+        salt: Number,
+        content: String,
+        avatar: String,
+        images: [String],
+        friends: [mongoose.Schema.Types.ObjectId],
+        posts: [mongoose.Schema.Types.ObjectId]
+    }
+));
+const DirectMessage = new mongoose.model("DM", new mongoose.Schema(
+    {
+        time: Number,
+        user: String,
+        recipient: String,
+        message: String
+
+    }
+));
 
 let sessions = {};
 
@@ -107,6 +138,14 @@ app.post('/account/login/', function(req, res) {
     
 });
 
+app.post("/logout", (req, res) => {
+    if (req.cookies.login != undefined) {
+        delete sessions[req.cookies.login.username];
+    }
+    res.send("Successfully logged out");
+})
+
+
 app.post('/add/user/', function(req, res) {
     /* 
         Adds a new user to the User collection of the database.
@@ -139,7 +178,7 @@ app.post('/add/user/', function(req, res) {
 
 app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html reference
     if (req.file == undefined) {
-        UserSchema.findOneAndUpdate(
+        User.findOneAndUpdate(
             {username: req.cookies.login.username},
             {$unset: {avatar: ""} }
         )
@@ -151,7 +190,7 @@ app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html 
         })
     }
     else {
-        UserSchema.findOneAndUpdate(
+        User.findOneAndUpdate(
             {username: req.cookies.login.username},
             {$set: {avatar: req.file.filename} }
         )
@@ -165,7 +204,7 @@ app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html 
 });
 
 app.get("/app/getProfilePic", (req, res) => {
-    UserSchema.findOne( {username: req.cookies.login.username} )
+    User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {
         if (response == null) {
             console.log("it's null");
@@ -176,6 +215,23 @@ app.get("/app/getProfilePic", (req, res) => {
         }
     })
 });
+
+app.get("/app/getFriends", (req, res) => {
+    User.findOne( {username: req.cookies.login.username} )
+    .then( (response) => {
+        res.send(response.friends);
+    })
+})
+app.get("/app/getInfo/:user", (req, res) => {
+    User.findOne( {_id: req.params.user} )
+    .then( (response) => {
+        res.send(response);
+    })
+})
+
+
+
+
 
 // app.get("/app/funkyAvatar", async (req, res) => {
 //     const uname = req.cookies.login.username;

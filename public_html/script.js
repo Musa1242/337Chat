@@ -54,6 +54,14 @@ function login() {
     });
   }
 
+function logout() {
+    let url = "/logout";
+    fetch(url, 
+        {
+            method: "POST"
+        })
+    window.location.href = window.location.origin;
+}
 
 function setProfilePic() {
     document.getElementById("imgStatus").innerText = ""; ///html reference, html needed
@@ -104,6 +112,30 @@ function fetchProfilePic() {
         }
         else {
             document.getElementById("avatar").innerHTML += "<img src='../img/" + response + "' alt='Your profile picture' width='450px;' height='450px'>";
+        }
+    })
+}
+
+function goHome() { //return to homepage
+    window.location.href = window.location.origin + "/app/home.html";
+}
+
+function getFriends() {
+    let url = "/app/getFriends";
+    fetch(url)
+    .then( (response) => {
+        return response.json(); //return the json and get the array of friends in the next block
+    })
+    .then( (response) => {
+        for (i in response) {
+            let url = "/app/getInfo/" + response[i];
+            fetch(url)
+            .then( (response) => {
+                return response.json();
+            })
+            .then( (response) => {
+                console.log(response);
+            })
         }
     })
 }
