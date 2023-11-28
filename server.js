@@ -18,8 +18,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     username: String,
-    password: String, // temporary
-    hash: Number,
+    hash: String,
     salt: Number,
     avatar: String, // change if needed
     gender: String
@@ -82,19 +81,30 @@ app.post('/account/login/', function(req, res) {
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
 
-    let p = User.find({'username':usernameIn, 'password':passwordIn}).exec();
+    let p = User.find({'username':usernameIn}).exec();
     p.then((documents) => {
         if (documents.length == 0){
             res.end('Login Failed');
         } else {
-            let sid = addSession(usernameIn);
+            let currentUser = documents[0];
+            let toHash = passwordIn + currentUser.salt;
+            let h = crypto.createHash('sha3-256');
+            let data = h.update(toHash, 'utf-8');
+            let result = data.digest('hex');
+
+            if (result == currentUser.hash) {
+                let sid = addSession(usernameIn);
             res.cookie("login", 
                 {username: usernameIn, sessionID: sid},
                 {maxAge: 60000 * 1}); // create a new cookie with 2 minutes life
             res.end('SUCCESS');
+            console.log('Logged in');
+            } else {
+                res.end('Login Failed');
+            }
         }
     });
-    console.log('Logged in');
+    
 });
 
 app.post('/add/user/', function(req, res) {
@@ -103,13 +113,17 @@ app.post('/add/user/', function(req, res) {
     */
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
-    let listingsIn = [];
-    let purchasesIn = [];
 
     let p1 = User.find({'username': usernameIn}).exec();
     p1.then( (results) => {
         if (results.length == 0){
-            let newUser = new User({username: usernameIn, password: passwordIn, listings: listingsIn, purchases: purchasesIn});
+            let newSalt = '' + Math.floor(Math.random()*1000000);
+            let toHash = passwordIn + newSalt;
+            let h = crypto.createHash('sha3-256');
+            let data = h.update(toHash, 'utf-8');
+            let result = data.digest('hex');
+
+            let newUser = new User({username: usernameIn, hash: result, salt: newSalt});
             let p = newUser.save();
             p.then(() => {
                 res.end('USER CREATED!');
