@@ -42,7 +42,7 @@ const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will
         content: String,
         avatar: String,
         images: [String],
-        friends: [mongoose.Schema.Types.ObjectId],
+        //friends: [mongoose.Schema.Types.ObjectId],
         posts: [mongoose.Schema.Types.ObjectId]
     }
 ));
@@ -229,7 +229,45 @@ app.get("/app/getInfo/:user", (req, res) => {
     })
 })
 
+app.get('app/search/:type/:keyword', (req, res) => {
+    if(req.params.type == "Users"){
+        let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).exec();
+        p.then((document) => {
+            res.send(document);
+        });
+    }
+    else if (req.params.type == "Posts") {
+        let p = Post.find({ "content": { $regex: req.params.keyword, $options:"i"}}).exec();
+        p.then((document) => {
+            res.send(document);
+        });
+    }
+})
 
+app.get('/app/addFriend/:username/:id', function(req, res) {
+    let p = User.find({"username": req.params.username}).exec();
+    p.then((document) => {
+        if(document.length == 0){
+            res.send("User does not exist.");
+        }
+        else {
+            let friend = User.findOne({_id: new mongoose.Types.ObjectId(req.params.id)});
+            friend.then((response) => {
+                response.friends.push(document);
+                let i = response.save();
+                i.then(() => {
+                    document[0].friends.push(response);
+                    document[0].save();
+                    console.log("Done");
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
+        }}).catch((error) => {
+            console.log(error);
+        });
+        res.end();
+});
 
 
 
