@@ -31,7 +31,9 @@ function login() {
     let us = document.getElementById('usernameLogin');
     let pw = document.getElementById('passwordLogin');
     let errorText = document.getElementById('loginError');
+    let gapText = document.getElementById('loginErrorGap');
     errorText.innerText = "";
+    gapText.innerText = "";
 
     // change to implement hashing/salting
     let data = {username: us.value, password: pw.value};
@@ -48,6 +50,7 @@ function login() {
         window.location.href = './app/home.html';
       } else {
         errorText.innerText = "There was an issue logging in with that info...";
+        gapText.innerText = ".";
         us.value = "";
         pw.value = "";
       }

@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="login.css">
     </head>
 
-    <body>
+    <body id="loginBody">
         <div id="logo">
             <img src="337Chat_logo_nobackground.png"
             alt="Picture of the logo for the app"
@@ -21,6 +21,8 @@
     
                 <label for="passwordCreate">Password</label>
                 <input type="password" id="passwordCreate" name="passwordCreate">
+
+                <div id="loginErrorGap"></div>
     
                 <input type="button" onclick="addUser();" id="signButton" value="SIGN UP">
             </div>

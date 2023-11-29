@@ -1,21 +1,19 @@
-body {
-    background-color: rgb(81,105,145);
+#loginBody {
+    background-color: white;
     text-align: center;
 }
 
 #logo {
-    height: 150px;
-    width: 400px;
+    height: 10vh;
+    min-height: 51px;
     background-color: white;
     border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    vertical-align: middle;
-    margin-left: auto;
-    margin-right:auto;
-    border: 5px solid rgb(159,160,162);
-    margin-top: 20px;
+    overflow: hidden;
+    margin-top:40px;
+    margin-bottom: 10px;
 }
 
 #logoImg {
@@ -33,31 +31,39 @@ body {
 
 #invFormContainer {
     display:block;
-    width: 650px;
-    height: 370px;
+    min-width: 400px;
+    width: fit-content;
+    background-color: rgb(81,105,145);
+    border-radius: 30px;
     margin-left: auto;
     margin-right: auto;
+    overflow-y:auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 #signUp {
     background-color: white;
     display: inline-block;
     border-radius: 50px;
-    margin-top: 10px;
     width: 300px;
     height: 350px;
     border: 5px solid rgb(159,160,162);
+    margin-right: 5px;
+    margin-top: 5px;
 }
 
 #login {
     background-color: white;
     display: inline-block;
-    margin-left: 10px;
     border-radius: 50px;
-    margin-top: 10px;
     width: 300px;
     height: 350px;
     border: 5px solid rgb(159,160,162);
+    margin-left: 5px;
+    margin-top: 10px;
 }
 
 label {
@@ -94,6 +100,14 @@ input {
     color: red;
     margin-bottom: 10px;
 }
+
+
+#loginErrorGap {
+    font-size: 15px;
+    color: white;
+    margin-bottom: 10px;
+}
+
 
 /* img {
     
