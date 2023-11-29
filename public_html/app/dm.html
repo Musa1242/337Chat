@@ -6,12 +6,19 @@
         <link rel="stylesheet" type="text/css" href="../style.css">
     </head>
     <body>
-        <img src="../337Chat_logo_nobackground.png"
-            alt="337chat Logo"
-            id="logoImgDm">
+        <div id="dmTitleArea">
+            <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="dmLogo">
+            <div id="dmTitle">DM's</div>
+        </div>
         <div id="mainConsoleDm">
             <div id="navConsoleDm">
-                hello
+                <div id="chatWith">Chat With:</div>
+                <select id="selectUserDm" name="searchType" class="dropdown">
+                    <option value="Option1">Seth</option>
+                    <option value="Option2">Kat</option>
+                    <option value="Option3">Musa</option>
+                    <option value="Option4">Mustafa</option>
+                </select>
             </div>
             <div id="chatAreaDm">
                 Seth: welcome to direct messages!

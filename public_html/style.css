@@ -26,7 +26,7 @@
     font-family: Verdana;
     font-size:40px;
     font-weight: bold;
-    color:grey;
+    color: rgb(159,160,162);
     margin: 0px;
     display: inline-block;
     white-space: nowrap;
@@ -47,12 +47,15 @@
 }
 
 #searchInnerBody {
-    height: 90vh;
+    height: 85vh;
+    width: 50%;
+    min-width: 450px;
     display: block;
-    position: relative;
-    background-color: lightblue;
-    margin-bottom: 0px;
+    background-color: rgb(81,105,145);
     overflow-y: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius:30px;
 }
 
 #searchArea {
@@ -113,12 +116,13 @@
 }
 
 #searchResults {
-    border: 2px solid black;
-    margin-top: 0px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    height: 88%;
+    border-radius: 30px;
+    background-color: white;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 85%;
+    width: 90%;
     overflow-y: auto;
     text-align: center;
 }
@@ -134,47 +138,76 @@
     display: block;
 }
 
-#logoImgDm {
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-    width: 300px;
-    margin-top: -25px;
+#dmTitleArea {
+    height: 10vh;
+    min-height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+#dmLogo {
+    display: inline;
+    width: 200px;
+    margin-top: 10px;
+}
+
+#dmTitle {
+    font-family: Verdana;
+    font-size:40px;
+    font-weight: bold;
+    color: rgb(159,160,162);
+    margin: 0px;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 #mainConsoleDm {
-    position: fixed;
-    top: 60px;
-    bottom:60px;
-    left: 120px;
-    right: 120px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -25px;
+    width: 60%;
+    min-width: 450px;
+    height: 85vh;
     background-color: rgb(81,105,145);
     border-radius:30px;
-    overflow-y: auto;
+}
+
+#chatWith {
+    color: white;
+    display: inline;
+    font-family: 'Lucida Sans';
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#selectUserDm {
+    width: 200px;
 }
 
 #navConsoleDm {
-    display: inline-block;
-    width: 35%;
+    display: block;
+    width: 100%;
     min-width:250px;
-    height: 90%;
     text-align: center;
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-bottom:30px;
+    padding-top: 25px;
+    margin-bottom: 20px;
     border-radius:30px;
-    background-color:white;
 }
 
 #chatAreaDm {
-    display: inline-block;
-    width: 57%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
     min-width: 350px;
-    height: 90%;
+    height: 81%;
     background-color:white;
     border-radius:30px;
     text-align: center;
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-bottom: 30px;
+    overflow-y:auto;
 }
