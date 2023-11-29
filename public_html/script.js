@@ -143,6 +143,10 @@ function getFriends() {
 function search() {
     window.location.href = '/app/search.html';
 }
+
+function directMessagePage() {
+    window.location.href = '/app/dm.html';
+}
 /////////funky pixel avatar generate code based on gender and username ,we can try later
 // function fetchFunkyAvatar() {
 //     document.getElementById("avatar").innerHTML = "Loading avatar..."; // a loading message

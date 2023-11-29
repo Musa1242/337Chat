@@ -133,3 +133,48 @@
     margin-right: auto;
     display: block;
 }
+
+#logoImgDm {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    width: 300px;
+    margin-top: -25px;
+}
+
+#mainConsoleDm {
+    position: fixed;
+    top: 60px;
+    bottom:60px;
+    left: 120px;
+    right: 120px;
+    background-color: rgb(81,105,145);
+    border-radius:30px;
+    overflow-y: auto;
+}
+
+#navConsoleDm {
+    display: inline-block;
+    width: 35%;
+    min-width:250px;
+    height: 90%;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom:30px;
+    border-radius:30px;
+    background-color:white;
+}
+
+#chatAreaDm {
+    display: inline-block;
+    width: 57%;
+    min-width: 350px;
+    height: 90%;
+    background-color:white;
+    border-radius:30px;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}

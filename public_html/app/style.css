@@ -59,21 +59,25 @@ h3 {
 	font-size: 20px;
 	position: fixed;
 	bottom: 10px;
-	margin: 0px 10px 0px 10px;
+	margin-left: 0px 10px 0px 10px;
 }
 
 #newPostButton {
-	left: 20%;
+	left: 5%;
 }
 
 #changeProfileButton {
-	left: 40%;
+	left: 20%;
 }
 
 #searchButton {
-	left: 60%;
+	left: 40%;
 }
 
 #loginButton {
-	left: 80%;
+	left: 60%;
+}
+
+#directMessageButton {
+	left: 75%;
 }
