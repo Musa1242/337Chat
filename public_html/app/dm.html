@@ -14,15 +14,27 @@
             <div id="navConsoleDm">
                 <div id="chatWith">Chat With:</div>
                 <select id="selectUserDm" name="searchType" class="dropdown">
-                    <option value="Option1">Seth</option>
-                    <option value="Option2">Kat</option>
-                    <option value="Option3">Musa</option>
-                    <option value="Option4">Mustafa</option>
+                    <option value="null" selected>Choose a Friend to Chat!</option>
+                    <option value="Seth">Seth</option>
+                    <option value="Kat">Kat</option>
+                    <option value="Musa">Musa</option>
+                    <option value="Mustafa">Mustafa</option>
                 </select>
+                <input type="button" id="switchDm" value="Submit" onclick="getDms();">
             </div>
             <div id="chatAreaDm">
-                Seth: welcome to direct messages!
+                <div class="dmDiv">
+                    <p class="dmChat">
+                        <p class="dmChatUser">337ChatBot:</p>
+                        Welcome to direct messages!
+                    </p>
+                </div> 
+            </div>
+            <div id="messageAreaDm">
+                <input type="text" id="messageBox" name="messageBox">
+                <input type="button" id="sendDm" value="Send" onclick="postDm();">
             </div>
         </div>
+        <script src="../script.js"></script>
     </body>
 </html>

@@ -196,7 +196,6 @@
     text-align: center;
     padding-top: 25px;
     margin-bottom: 20px;
-    border-radius:30px;
 }
 
 #chatAreaDm {
@@ -205,9 +204,35 @@
     margin-right: auto;
     width: 90%;
     min-width: 350px;
-    height: 81%;
+    height: 75%;
     background-color:white;
     border-radius:30px;
-    text-align: center;
+    text-align: left;
+    text-indent: 50px;
     overflow-y:auto;
+}
+
+.dmDiv {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.dmChatUser {
+    color: rgb(81,105,145);
+    font-weight: bold;
+    font-family: 'Lucida Sans';
+    display: inline;
+}
+
+#messageBox {
+    width: 300px;
+}
+
+#messageAreaDm {
+    display: block;
+    width: 100%;
+    min-width:250px;
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 20px;
 }

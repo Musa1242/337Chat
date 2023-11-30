@@ -143,6 +143,96 @@ function getFriends() {
     })
 }
 
+function getDms() {
+    let recipientIn = document.getElementById('selectUserDm');
+    let chatArea = document.getElementById('chatAreaDm');
+
+    if (recipientIn.value != "null"){
+        let url = '/app/getDms/' + recipientIn.value;
+        let p = fetch(url);
+        p.then((response) => {
+            if(response.redirected) {
+                window.location.href = response.url;
+            } else {
+                let p1 = response.text();
+                p1.then((text) => {
+                    let jsonObj = JSON.parse(text);
+                    let htmlString = "";
+
+                    let sortedDocs = [];
+                    let lastTime = 0
+                    for (let i=0; i < jsonObj.length; i++) {
+                        let item = jsonObj[i];
+                        let time = item['time'];
+                        let user = item['user'];
+                        let message = item['message'];
+
+                        if (time > lastTime){
+                            lastTime = time;
+                            sortedDocs.push(item);
+                        } else {
+                            sortedDocs = [item].concat(sortedDocs);
+                        }
+                    }
+
+                    for (let j = 0; j < sortedDocs.length; j++) {
+                        let item = sortedDocs[j];
+                        let time = item['time'];
+                        let user = item['user'];
+                        let message = item['message'];
+
+                        let addHtml = "<div class='dmDiv'>" + "<p class='dmChat' >" +
+                                    "<p class='dmChatUser' >" + user + ": " + "</p>" +
+                                    message + "</p>" + "</div>";
+                        
+                        htmlString += addHtml;
+                    }
+
+                    chatArea.innerHTML = htmlString;
+                })
+            }
+        });
+    } else {
+        chatArea.innerHTML = "<div class='dmDiv' >" + "<p class='dmChat' >" +
+        "<p class='dmChatUser' >" + "337ChatBot" + ": " + "</p>" +
+        "Welcome to direct messages!" + "</p>" + "</div>";
+    }
+    
+}
+
+function postDm() {
+    let recipientIn = document.getElementById('selectUserDm');
+    let messageIn = document.getElementById('messageBox');
+    let currTime = Date.now();
+    let chatArea = document.getElementById('chatAreaDm');
+
+    if (recipientIn.value == "null"){
+        let htmlString = "<div class='dmDiv' >" + "<p class='dmChat' >" +
+        "<p class='dmChatUser' >" + "337ChatBot" + ": " + "</p>" +
+        "Welcome to direct messages!" + "</p>" + "</div>" + "<div class='dmDiv' >" + "<p class='dmChat' >" +
+        "<p class='dmChatUser' >" + "337ChatBot" + ": " + "</p>" +
+        "Sorry, you cannot chat with me :) - switch who to DM above!" + "</p>" + "</div>";
+
+        chatArea.innerHTML = htmlString;
+
+    } else {
+        let inputObject = {time: currTime, recipient: recipientIn.value, message: messageIn.value};
+
+        let p = fetch('/app/dms/post', { // change localhost here
+            method: 'POST',
+            body: JSON.stringify(inputObject),
+            headers: { 'Content-Type': 'application/json'}
+        });
+        p.then((response) => {
+            return response.text();
+        }).then((text) => {
+            console.log(text);
+        });
+    }
+
+    messageIn.value = "";
+}
+
 function search() {
     window.location.href = '/app/search.html';
 }
@@ -150,6 +240,18 @@ function search() {
 function directMessagePage() {
     window.location.href = '/app/dm.html';
 }
+
+window.addEventListener('DOMContentLoaded', function() {
+    // Use this as 'on new page load, if page is ___ do something
+    let currentPath = window.location.pathname;
+
+    if (currentPath == '/app/dm.html'){
+        // Here is where you would call funct to change the values of the dropdown to names of friends
+        console.log('refreshing dms');
+        this.window.setInterval(getDms, 1000);
+    }
+});
+
 /////////funky pixel avatar generate code based on gender and username ,we can try later
 // function fetchFunkyAvatar() {
 //     document.getElementById("avatar").innerHTML = "Loading avatar..."; // a loading message

@@ -269,6 +269,35 @@ app.get('/app/addFriend/:username/:id', function(req, res) {
         res.end();
 });
 
+app.get('/app/getDms/:RECIPIENT', function(req, res) {
+    recipientIn = req.params.RECIPIENT;
+    let userIn = req.cookies.login.username;
+
+    let p = DirectMessage.find({
+        $or: [ 
+            {"user": userIn, "recipient": recipientIn},
+            {"user": recipientIn, "recipient": userIn}
+        ]
+        }).exec();
+    
+    p.then((documents) => {
+        res.end(JSON.stringify(documents, null, 2));
+    })
+});
+
+app.post('/app/dms/post', function(req, res) {
+    let userIn = req.cookies.login.username;
+    let timeIn = req.body.time;
+    let recipientIn = req.body.recipient;
+    let messageIn = req.body.message;
+
+    res.end('Got request to post the DM!');
+
+    let newDM = new DirectMessage({time: timeIn, user: userIn, recipient: recipientIn, message: messageIn});
+    return newDM.save();
+})
+
+
 
 
 // app.get("/app/funkyAvatar", async (req, res) => {
