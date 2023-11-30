@@ -72,7 +72,7 @@ function removeSessions() {
     let usernames = Object.keys(sessions);
     for (let i = 0; i < usernames.length; i++) {
         let last = sessions[usernames[i]].time;
-        if (last + 60000 < now) { // TODO - change - currently 1 minute
+        if (last + 600000 < now) { // TODO - change - currently 1 minute
             delete sessions[usernames[i]];
             console.log("" + usernames[i] + " session deleted");
         }
@@ -215,6 +215,7 @@ app.get("/app/getProfilePic", (req, res) => {
         }
     })
 });
+
 app.get('/app/userInfo', (req, res) => {
     let username = req.cookies.login?.username;
     if (!username) {
