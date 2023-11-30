@@ -21,7 +21,7 @@ var UserSchema = new Schema({
     hash: String,
     salt: Number,
     avatar: String, // change if needed
-    gender: String,
+    gender: { type: String, default: 'male' },
     friends: [mongoose.Schema.Types.ObjectId],
     posts: [mongoose.Schema.Types.ObjectId]
     //age: Number, if needed
@@ -214,6 +214,47 @@ app.get("/app/getProfilePic", (req, res) => {
             res.send(response.avatar);
         }
     })
+});
+app.get('/app/userInfo', (req, res) => {
+    let username = req.cookies.login?.username;
+    if (!username) {
+        console.log("No username in cookies");
+        return res.status(401).send('User not logged in');
+    }
+
+    User.findOne({username: username}, 'username gender', (err, user) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).send("Error fetching user info");
+        }
+        if (!user) {
+            console.log("User not found for username:", username);
+            return res.status(404).send("User not found");
+        }
+        console.log("User found:", user);
+        res.json({username: user.username, gender: user.gender || 'Not set'});
+    });
+});
+
+
+app.post('/app/updateProfile', function(req, res) {
+    const { gender } = req.body; // Add other fields as needed
+    const username = req.cookies.login?.username;
+
+    if (!username) {
+        return res.status(401).send('User not logged in');
+    }
+
+    User.findOneAndUpdate({ username }, { $set: { gender } }, { new: true }, (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Error updating profile");
+        }
+        if (!updatedUser) {
+            return res.status(404).send("User not found");
+        }
+        res.send("Profile updated successfully");
+    });
 });
 
 app.get("/app/getFriends", (req, res) => {

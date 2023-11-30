@@ -14,7 +14,10 @@
 		</div>
 		<div id="profile">
 			<div id="username" class="userInfo">
-				<h3>Username</h3>
+				<h3>Username:</h3>
+			</div>
+			<div id="gender" class="userInfo">
+				<h3>Gender:</h3>
 			</div>
 			<div id="postCount" class="userInfo">
 				<h3>Posts: 0 posts</h3>
@@ -55,5 +58,9 @@
 
 		<input type="button" onclick="directMessagePage();" id="directMessageButton" class="button" value="DIRECT MESSAGES">
         <script src="/script.js"></script>
+		<script>
+            fetchProfilePic();
+			fetchUserInfo();
+        </script>
 	</body>
 </html>

@@ -65,6 +65,23 @@ function logout() {
         })
     window.location.href = window.location.origin;
 }
+function fetchUserInfo() {
+    fetch('/app/userInfo')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(user => {
+        document.getElementById('username').innerHTML = `<h3>Username: ${user.username}</h3>`;
+        document.getElementById('gender').innerHTML = `<h3>Gender: ${user.gender || 'Not set'}</h3>`;
+    })
+    .catch(err => console.error("Error fetching user info:", err));
+}
+
+
+
 
 function setProfilePic() {
     document.getElementById("imgStatus").innerText = ""; ///html reference, html needed
@@ -118,11 +135,36 @@ function fetchProfilePic() {
         }
     })
 }
+function updateProfile() {
+    const gender = document.getElementById('gender').value;
+    // Add other fields as needed
+
+    fetch('/app/updateProfile', {
+        method: 'POST',
+        body: JSON.stringify({ gender }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' // Important for sending cookies
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Profile update failed');
+        return response.text();
+    })
+    .then(result => {
+        console.log(result);
+        // Maybe redirect to the homepage or show a success message
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 
 function goHome() { //return to homepage
     window.location.href = window.location.origin + "/app/home.html";
 }
-
+function changeProfile() { //open update profile
+    window.location.href = window.location.origin + "/app/update_profile.html";
+}
 function getFriends() {
     let url = "/app/getFriends";
     fetch(url)
