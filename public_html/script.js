@@ -234,10 +234,6 @@ function getDms() {
                 })
             }
         });
-    } else {
-        chatArea.innerHTML = "<div class='dmDiv' >" + "<p class='dmChat' >" +
-        "<p class='dmChatUser' >" + "337ChatBot" + ": " + "</p>" +
-        "Welcome to direct messages!" + "</p>" + "</div>";
     }
     
 }
