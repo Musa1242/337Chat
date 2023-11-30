@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <form id="updateProfileForm">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="non-binary">non-binary</option>
+        </select>
+
+        <label for="img">Profile Picture:</label>
+        <input type="file" id="img" name="img" accept="image/*">
+        <input type="file" id="avatar" name="img" accept="image/*">
+        <p id="imgStatus"></p>
+        <button type="button" onclick="setProfilePic()">Change profile picture</button>
+        <button type="button" onclick="removeProfilePic()">Remove profile picture</button>
+        <button type="button" onclick="updateProfile()">Change User Info</button>
+        <button type="button" onclick="goHome()">Return home</button>
+        <script src="/script.js"></script>
+        <script>
+            fetchProfilePic();
+        </script>
+    </form>
+    
+</body>
+</html>
