@@ -110,6 +110,16 @@ app.get('/app/*', (req, res, next) => {
 
 app.use(express.static('public_html'));
 
+app.get('/app/getUsername', function(req, res) {
+    /* 
+        This function serves as a helper function to 
+        get the username of the current user from
+        the cookies.
+    */
+    let c = req.cookies;
+    res.end(c.login.username);
+})
+
 app.post('/account/login/', function(req, res) {
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
@@ -273,34 +283,36 @@ app.get("/app/getInfo/:user", (req, res) => {
     })
 })
 
-app.get('app/search/:type/:keyword', (req, res) => {
+app.get('/app/search/:type/:keyword', (req, res) => {
     if(req.params.type == "Users"){
-        let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).exec();
+        let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).populate('comingRequests').populate('outgoingRequests').populate('friends').exec();
         p.then((document) => {
-            res.send(document);
+            res.json(document);
         });
     }
     else if (req.params.type == "Posts") {
         let p = Post.find({ "content": { $regex: req.params.keyword, $options:"i"}}).exec();
         p.then((document) => {
-            res.send(document);
+            res.json(document);
         });
     }
 })
 
-app.get('/app/addFriend/:username/:id', function(req, res) {
+app.get('/app/addFriend/:username/', function(req, res) {
     let p = User.find({"username": req.params.username}).exec();
     p.then((document) => {
         if(document.length == 0){
             res.send("User does not exist.");
         }
         else {
-            let friend = User.findOne({_id: new mongoose.Types.ObjectId(req.params.id)});
+            let friend = User.findOne({'username': req.cookies.login.username});
             friend.then((response) => {
-                response.friends.push(document);
+                response.friends.push(document[0]._id);
+                response.comingRequests.splice(response.comingRequests.indexOf(new mongoose.Types.ObjectId(document[0]._id)), 1);
                 let i = response.save();
                 i.then(() => {
-                    document[0].friends.push(response);
+                    document[0].friends.push(response._id);
+                    document[0].outgoingRequests.splice(document[0].outgoingRequests.indexOf(new mongoose.Types.ObjectId(response._id)), 1);
                     document[0].save();
                     console.log("Done");
                 }).catch((error) => {
@@ -311,6 +323,87 @@ app.get('/app/addFriend/:username/:id', function(req, res) {
             console.log(error);
         });
         res.end();
+});
+
+app.get('/app/friendRequest/:username', function(req, res){
+    let loggedUser = req.cookies.login.username;
+    let p = User.find({"username": req.params.username}).exec();
+    p.then((document) => {
+        console.log(document)
+        if(document.length == 0){
+            res.send("User does not exist.");
+        }
+        else {
+            let currentUser = User.findOne({username: loggedUser});
+            currentUser.then((response) => {
+                response.outgoingRequests.push(document[0]._id);
+                let i = response.save();
+                i.then(() => {
+                    document[0].comingRequests.push(response._id);
+                    document[0].save();
+                    console.log("Done");
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
+            res.send('Success');
+        }}).catch((error) => {
+            console.log(error);
+        });
+})
+
+app.get('/app/get/friends', function(req, res) {
+    console.log('22')
+    let information = {};
+    information.friends = [];
+    information.comingRequests = [];
+    let p = User.find({'username': req.cookies.login.username}).exec();
+    p.then((document) => {
+        if(document[0].friends.length == 0 && document[0].comingRequests.length == 0){
+            res.json(information);
+        }
+        else {
+            let max = '';
+            if(document[0].friends.length > document[0].comingRequests.length){
+                max = 'f';
+            }
+            else {
+                max = 'c';
+            }
+
+            console.log("1 server")
+            console.log(document[0].friends.length)
+            for(let i = 0; i < document[0].friends.length; i++){
+                console.log('4 servrer')
+                User.findOne({_id: new mongoose.Types.ObjectId(document[0].friends[i])}).select('username gender avatar').exec()
+                
+                .then((response) => {
+                    if(response) {
+                        console.log("2 server")
+                        information.friends.push(response);
+                    }
+                    if(i == document[0].friends.length-1 && max == 'f'){
+                        console.log("3 server")
+                        res.json(information)
+                        
+                    }   
+                })
+            }
+            for(let i = 0; i < document[0].comingRequests.length; i++){
+                User.findOne({_id: new mongoose.Types.ObjectId(document[0].comingRequests[i])}).select('username gender avatar').exec()
+                .then((response) => {
+                    if(response){
+                        information.comingRequests.push(response);
+                    }
+                    if(i == document[0].comingRequests.length-1 && max == 'c'){
+                        res.json(information);
+                    }
+                })
+            }
+        }
+    }).catch((error) => {
+        console.log(error)
+    })
 });
 
 app.get('/app/getDms/:RECIPIENT', function(req, res) {

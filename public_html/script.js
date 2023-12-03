@@ -65,6 +65,21 @@ function logout() {
         })
     window.location.href = window.location.origin;
 }
+
+function getCurrUser() {
+    let url = '/app/getUsername';
+    let p = fetch(url);
+    p.then((response) => {
+        let p1 = response.text();
+        p1.then((text) => {
+            return text;
+        })
+    })
+    .catch((error)=> {
+        console.log(error);
+    })
+}
+
 function fetchUserInfo() {
     fetch('/app/userInfo')
     .then(response => {
@@ -79,9 +94,6 @@ function fetchUserInfo() {
     })
     .catch(err => console.error("Error fetching user info:", err));
 }
-
-
-
 
 function setProfilePic() {
     document.getElementById("imgStatus").innerText = ""; ///html reference, html needed
@@ -192,6 +204,7 @@ function searchUsers() {
 
     fetch(url)
         .then((response) => {
+            console.log(response);
             return response.text();
         })
         .then((text) => {
@@ -199,7 +212,8 @@ function searchUsers() {
             let element = document.getElementById('searchResults');
             let string = '';
             let flag = 0;
-            let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
+            let username = getCurrUser();
+            //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
             for(let i = 0; i < information.length; i++){
                 string += information[i].username;
 
@@ -254,7 +268,7 @@ function sendFriendRequest(username) {
         if(text == 'Success'){
             console.log("reached")
             document.getElementById('requestButton').innerHTML = 'Sent'
-            //window.location.href = './friends.html'
+            window.location.href = './friends.html'
         }
         else {
             alert(text)
