@@ -185,6 +185,136 @@ function getFriends() {
     })
 }
 
+function searchUsers() {    
+    let username = document.getElementById('searchBox').value;
+    let type = document.getElementById('searchType').value;
+    let url = '/app/search/' + type + "/" + username;
+
+    fetch(url)
+        .then((response) => {
+            return response.text();
+        })
+        .then((text) => {
+            let information = JSON.parse(text);
+            let element = document.getElementById('searchResults');
+            let string = '';
+            let flag = 0;
+            let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
+            for(let i = 0; i < information.length; i++){
+                string += information[i].username;
+
+                console.log(information[i].username, "USERNAME")
+                console.log(information[i].outgoingRequests, "OUTGOING")
+                console.log(information[i].comingRequests, "COMING")
+                console.log();
+
+                for(let j = 0; j < information[i].comingRequests.length; j++){
+                    //console.log(information[i].comingRequests[j].username == username);
+                    if(information[i].comingRequests[j].username == username) {
+                        string += '<p>Waiting For Response</p>';
+                        console.log('1')
+                        flag = 1;
+                    }
+                }
+                for(let j = 0; j < information[i].outgoingRequests.length; j++){
+                    if(information[i].outgoingRequests[j].username == username) {
+                        string += '<p>Request Recieved</p>';
+                        console.log('2')
+                        flag = 1;
+                    }
+                }
+                for(let j = 0; j < information[i].friends.length; j++){
+                    if(information[i].friends[j].username == username) {
+                        string += '<p>Already Friends</p>';
+                        flag = 1;
+                    }
+                } 
+                if(username == information[i].username){
+                    flag = 1;
+                }
+                if(flag == 0) {
+                    console.log("ADD")
+                    string += `<div id="requestButton"><input type="button" id="${information[i]._id}" value="Send Friend Request" onclick="sendFriendRequest('${information[i].username}')"></div>`
+                }
+                
+                element.innerHTML = string;
+                flag = 0;
+            }
+        }).catch((error) => {
+            console.log("searching problem");
+            console.log(error);
+        })
+}
+
+function sendFriendRequest(username) {
+    let url = '/app/friendRequest/' + username
+    fetch(url).then((response) =>{
+        return response.text();
+    }).then((text) => {
+        if(text == 'Success'){
+            console.log("reached")
+            document.getElementById('requestButton').innerHTML = 'Sent'
+            //window.location.href = './friends.html'
+        }
+        else {
+            alert(text)
+        }
+    }).catch((error) =>{
+        console.log('client send request error');
+        console.log(error)
+    })
+}
+
+function addFriend(username) {
+    let url = '/app/addFriend/' + username;
+
+    fetch(url)
+        .then((response) => {
+            return response.text()
+        })
+        .then((text) => {
+            window.location.href = './friends.html'
+        }).catch((error) => {
+            console.log(error)
+        })
+}
+
+function displayFriends() {
+    let url = '/app/get/friends';
+    console.log('1');
+    fetch(url)
+        .then((response) => {
+            console.log('2');
+            console.log(response)
+            return response.json();
+        })
+        .then((information) => {
+            console.log('3');
+            let friends = document.getElementById('friends');
+            let friendRequests = document.getElementById('friendRequests');
+            let friendString = '';
+            let requestString = '';
+            for(let i = 0; i < information.friends.length; i++){
+                console.log(information.friends[i].username)
+                friendString += '<div>' + information.friends[i].username + '</div>';
+            }
+            for(let i= 0; i < information.comingRequests.length; i++) {
+                console.log(information.comingRequests[i]._id)
+                requestString += '<div>' + information.comingRequests[i].username + '</div>' + `<div><input type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div>`
+                
+                //'<div><input type="button" id="' + information[i]._id +'" value="Accept Friend" onclick="addFriend("'+ information[i].username+ '");></div>'
+                //`</div><div><input type="button" id="${information[i]._id}" value="Accept Friend Request" onclick="addFriend('${information[i].username}')"></div>`;
+            }
+
+            friends.innerHTML = friendString
+            friendRequests.innerHTML = requestString
+            
+
+        }).catch((error) => {
+            console.log(error)
+        })
+}
+
 function getDms() {
     let recipientIn = document.getElementById('selectUserDm');
     let chatArea = document.getElementById('chatAreaDm');

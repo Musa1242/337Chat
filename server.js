@@ -22,7 +22,9 @@ var UserSchema = new Schema({
     salt: Number,
     avatar: String, // change if needed
     gender: { type: String, default: 'male' },
-    friends: [mongoose.Schema.Types.ObjectId],
+    outgoingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    comingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     posts: [mongoose.Schema.Types.ObjectId]
     //age: Number, if needed
 });

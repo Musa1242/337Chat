@@ -1,0 +1,46 @@
+body {
+    background-color: lightblue;
+    text-align: center;
+}
+
+#friends {
+    background-color: white;
+    box-sizing: border-box;
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 35%;
+    left: 22.5%;
+    width: 25%;
+    height: 60%;
+    padding-left: 40px;
+}
+
+#friendRequests {
+    background-color: white;
+    box-sizing: border-box;
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 35%;
+    left: 52.5%;
+    width: 25%;
+    height: 60%;
+    padding-left: 40px;
+}
+
+#friendsLabel {
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 25%;
+    left: 25.5%;
+}
+
+#friendRequestsLabel {
+    position: fixed;
+    text-align: left;
+    font-size: 25px;
+    top: 25%;
+    left: 55.5%;
+}

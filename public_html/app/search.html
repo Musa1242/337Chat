@@ -4,12 +4,14 @@
         <meta charset="utf-8"/>
         <title>337chat</title>
         <link id="cssFile" rel="stylesheet" type="text/css" href="../style.css">
+        <script src="../script.js" defer></script>
     </head>
     <body id="searchBody">
         <div id="searchTitleArea">
             <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="searchLogo">
             <div id="searchTitle">Search</div>
         </div>
+        
         <div id="searchInnerBody">
             <div id="searchArea">
                 <input type="text" id="searchBox" name="searchBox">
@@ -17,9 +19,10 @@
                     <option value="Users">Users</option>
                     <option value="Posts">Posts</option>
                 </select>
-                <input type="button" id="searchButton" value="Search"> 
+                <input type="button" onclick="searchUsers();" id="searchButton" value="Search"> 
             </div>
-            <div id="searchResults">
+
+            <div class="users" id="searchResults">
                 <div class="resultBox">results</div>
                 <div class="resultBox">results</div>
                 <div class="resultBox">results</div>
