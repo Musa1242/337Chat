@@ -198,6 +198,36 @@ function getFriends() {
     })
 }
 
+function getCookieValue(cookieName) {
+    const cookies = document.cookie.split(';');
+    
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      
+      if (name === cookieName) {
+        let decodedValue = decodeURIComponent(value);
+        
+        // Handle the "j:" prefix
+        if (decodedValue.startsWith('j:')) {
+          decodedValue = decodedValue.substring(2);
+        }
+        try {
+          const jsonValue = JSON.parse(decodedValue);
+  
+          if (jsonValue && jsonValue.username) {
+            return jsonValue.username;
+          } else {
+            return null; // Username not found in the JSON or JSON is invalid
+          }
+        } catch (error) {
+          console.error('Error parsing JSON from cookie:', error);
+          return null;
+        }
+      }
+    }
+    return null;
+}
+
 function searchUsers() {    
     let username = document.getElementById('searchBox').value;
     let type = document.getElementById('searchType').value;
@@ -212,9 +242,10 @@ function searchUsers() {
             let element = document.getElementById('searchResults');
             let string = '';
             let flag = 0;
-            let username = getCurrUser();
+            let username = getCookieValue('login');
             //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
             for(let i = 0; i < information.length; i++){
+                console.log('username check: ');
                 console.log(information[i].username);
                 console.log(username);
 
