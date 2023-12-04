@@ -227,6 +227,7 @@ function searchUsers() {
         .then((text) => {
             let information = JSON.parse(text);
             let element = document.getElementById('searchResults');
+            element.innerHTML = "";
             let string = '';
             let flag = 0;
             let username = getCookieValue('login');

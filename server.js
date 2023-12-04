@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 const multer = require("multer");
 const upload = multer( {dest: __dirname + '/public_html/img'} );
-const fetch = require('node-fetch');
+//const fetch = require('node-fetch');
 
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
@@ -75,7 +75,7 @@ function removeSessions() {
     let usernames = Object.keys(sessions);
     for (let i = 0; i < usernames.length; i++) {
         let last = sessions[usernames[i]].time;
-        if (last + 600000 < now) { // TODO - change - currently 1 minute
+        if (last + 600000000 < now) { // TODO - change - currently 1 minute
             delete sessions[usernames[i]];
             console.log("" + usernames[i] + " session deleted");
         }
@@ -141,7 +141,7 @@ app.post('/account/login/', function(req, res) {
                 let sid = addSession(usernameIn);
             res.cookie("login", 
                 {username: usernameIn, sessionID: sid},
-                {maxAge: 60000 * 1}); // create a new cookie with 2 minutes life
+                {maxAge: 600000 * 1}); // create a new cookie with 2 minutes life
             res.end('SUCCESS');
             console.log('Logged in');
             } else {
