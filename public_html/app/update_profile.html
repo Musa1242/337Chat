@@ -18,9 +18,32 @@
         <input type="file" id="img" name="img" accept="image/*">
         <input type="file" id="avatar" name="img" accept="image/*">
         <p id="imgStatus"></p>
-        <button type="button" onclick="setProfilePic()">Change profile picture</button>
-        <button type="button" onclick="removeProfilePic()">Remove profile picture</button>
         <button type="button" onclick="updateProfile()">Change User Info</button>
+        <button type="button" onclick="setProfilePic()">Change profile picture</button>
+        
+        
+        
+    <label for="avatarVariant">Avatar Variant:</label>
+        <select id="avatarVariant">
+            <option value="marble">Marble</option>
+            <option value="beam">Beam</option>
+            <option value="pixel">Pixel</option>
+            <option value="sunset">Sunset</option>
+            <option value="ring">Ring</option>
+            <option value="bauhaus">Bauhaus</option>
+        </select>
+
+        <div>
+            <label>Avatar Colors:</label>
+            <input type="color" id="color1" value="#264653">
+            <input type="color" id="color2" value="#2a9d8f">
+            <input type="color" id="color3" value="#e9c46a">
+            <input type="color" id="color4" value="#f4a261">
+            <input type="color" id="color5" value="#e76f51">
+        </div>
+
+        <button type="button" onclick="createCustomBoringAvatar()">Create Custom Avatar</button>
+        <button type="button" onclick="removeProfilePic()">Remove profile picture</button>
         <button type="button" onclick="goHome()">Return home</button>
         <script src="/script.js"></script>
         <script>
