@@ -283,6 +283,7 @@ app.post('/app/updateProfile', function(req, res) {
 app.get("/app/getFriends", (req, res) => {
     User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {
+        console.log(response.friends);
         res.send(response.friends);
     })
 })
@@ -414,6 +415,34 @@ app.get('/app/get/friends', function(req, res) {
     }).catch((error) => {
         console.log(error)
     })
+});
+
+
+
+app.get('/app/getFriendsUsernames', function(req, res) {
+    let p = User.findOne({ username: req.cookies.login.username })
+    p.then((response) => {
+        let friendIds = response.friends;
+
+        //array of promises
+        let promises = friendIds.map(friendId => {
+            return User.findOne({ _id: friendId })
+                .then((friend) => {
+                    return friend.username;
+                });
+        });
+
+        // Wait for all promises to be resolved
+        return Promise.all(promises)
+            .then((friendUsernames) => {
+                console.log('Friends:')
+                console.log(friendUsernames);
+                res.send(friendUsernames);
+            });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 });
 
 app.get('/app/getDms/:RECIPIENT', function(req, res) {

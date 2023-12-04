@@ -353,6 +353,31 @@ function displayFriends() {
         })
 }
 
+function setDmDropdown() {
+    let dropdown = document.getElementById('selectUserDm');
+    let username = getCookieValue('login');
+    let dropdownString = '';
+
+    let url = "/app/getFriendsUsernames";
+
+    let p = fetch(url)
+
+    p.then((response) => {
+        return response.json();
+    })
+    .then( (friendUsernames => {
+        console.log('Friend Usernames: ', friendUsernames);
+        dropdownString = '<option value="null" selected>Choose a Friend to Chat!</option>'
+        for (let i=0; i<friendUsernames.length;i++){
+            dropdownString += '<option value="' + friendUsernames[i] + '">' + friendUsernames[i] +'</option>';
+        }
+        dropdown.innerHTML = dropdownString;
+    }))
+    .catch(error => {
+        console.error('Error fetching friend usernames:', error);
+    });
+}
+
 function getDms() {
     let recipientIn = document.getElementById('selectUserDm');
     let chatArea = document.getElementById('chatAreaDm');
