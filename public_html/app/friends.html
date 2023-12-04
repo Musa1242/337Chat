@@ -7,12 +7,24 @@
         <script src="../script.js" defer></script>
     </head>
     <body  onload="displayFriends();">
-        <h1>Friends Page</h1>
-
-        <h2 id="friendsLabel">Friends</h2>
-        <div id="friends"></div>
-
-        <h2 id="friendRequestsLabel">Friend Requests</h2>
-        <div id="friendRequests"></div>
+        <div id="friendsTitleArea">
+            <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="friendsLogo">
+            <div id="friendsTitle">Friends</div>
+        </div>
+        <div id="friendsAreaContainer">
+            <div id="friendsArea">
+                <div id="friendsPageLabel" class="friendLabel">
+                    Friends:
+                </div>
+                <div id="friends"></div>
+            </div>
+            
+            <div id="friendRequestsArea">
+                <div id="friendRequestsLabel" class="friendLabel">
+                    Friend Requests:
+                </div>
+                <div id="friendRequests"></div>
+            </div>
+        </div>
     </body>
 </html>

@@ -236,3 +236,42 @@
     padding-top: 20px;
     margin-bottom: 20px;
 }
+
+.outerUserSearchArea {
+    display: flex;
+    width: fit-content;
+    min-width: 500px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    border: 2px solid rgb(159,160,162);
+    margin-top: 20px;
+    padding-right: 10px;
+}
+
+.usernameSearch {
+    font-family: Verdana;
+    font-size: 25px;
+    display: inline;
+    margin-left: 0px;
+    margin-top:10px;
+    width: fit-content;
+    text-indent: 10px;
+}
+
+.friendReqButton {
+    margin-top: 15px;
+    position: relative;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.statusP {
+    font-family: Verdana;
+    font-size: 15px;
+    margin-top: 18px;
+    position: relative;
+    margin-left: 20px;
+    display: inline-block;
+}

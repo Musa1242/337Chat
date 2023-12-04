@@ -1,46 +1,143 @@
 body {
-    background-color: lightblue;
+    background-color: white;
     text-align: center;
 }
 
-#friends {
-    background-color: white;
-    box-sizing: border-box;
-    position: fixed;
-    text-align: left;
-    font-size: 25px;
-    top: 35%;
-    left: 22.5%;
-    width: 25%;
-    height: 60%;
+#friendsTitleArea {
+    height: 10vh;
+    min-height: 51px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+#friendsLogo {
+    display: inline;
+    width: 200px;
+    margin-top: 10px;
+}
+
+#friendsTitle {
+    font-family: Verdana;
+    font-size: 40px;
+    font-weight:bold;
+    color: rgb(159,160,162);
+    margin: 0px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#friendsPageLabel {
+    display: block;
+}
+
+#friendsAreaContainer {
+    display:block;
+    min-width: 400px;
+    width: fit-content;
+    background-color: rgb(81,105,145);
+    border-radius: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y:auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
     padding-left: 40px;
+    padding-right: 40px;
 }
 
-#friendRequests {
+#friendsArea {
     background-color: white;
-    box-sizing: border-box;
-    position: fixed;
+    display: inline-block;
+    border-radius: 30px;
+    width: 350px;
+    height: 400px;
+    margin-right: 5px;
+    margin-top: 5px;
     text-align: left;
-    font-size: 25px;
-    top: 35%;
-    left: 52.5%;
-    width: 25%;
-    height: 60%;
-    padding-left: 40px;
+    text-indent: 40px;
+    overflow-y:auto;
+    padding-top: 15px;
 }
 
-#friendsLabel {
-    position: fixed;
+#friendRequestsArea {
+    background-color: white;
+    display: inline-block;
+    border-radius: 30px;
+    width: 350px;
+    height: 400px;
+    margin-left: 5px;
+    margin-top: 10px;
     text-align: left;
-    font-size: 25px;
-    top: 25%;
-    left: 25.5%;
+    text-indent: 40px;
+    overflow-y:auto;
+    padding-top: 15px;
 }
 
-#friendRequestsLabel {
-    position: fixed;
-    text-align: left;
+
+.friendLabel {
+    font-family: 'Verdana';
+    color: rgb(159,160,162);
     font-size: 25px;
-    top: 25%;
-    left: 55.5%;
+    font-weight: bold;
+    text-indent: 30px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.displayFriendsOutConsole {
+    display: flex;
+    width:fit-content;
+    min-width: 325px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    border: 2px solid rgb(159,160,162);
+    margin-top: 10px;
+    padding-right: 10px;
+}
+
+.displayFriendsText{
+    font-family: Verdana;
+    font-size: 25px;
+    display: inline;
+    margin-left: 0px;
+    margin-top:8px;
+    width: 300px;
+    text-indent: 8px;
+}
+
+.displayFriendReqOutConsole {
+    display: flex;
+    width: fit-content;
+    min-width: 325px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    border: 2px solid rgb(159,160,162);
+    margin-top: 10px;
+    margin-top: 20px;
+    padding-right: 10px
+}
+
+.displayFriendRequestText {
+    font-family: Verdana;
+    font-size: 25px;
+    display: inline;
+    margin-left: 0px;
+    margin-top:8px;
+    width: fit-content;
+    text-indent: 8px;
+}
+
+.acceptFriendButton {
+    margin-top: 15px;
+    position: relative;
+    margin-right: 5px;
+    display: inline-block;
 }

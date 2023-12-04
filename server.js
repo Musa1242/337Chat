@@ -117,6 +117,7 @@ app.get('/app/getUsername', function(req, res) {
         the cookies.
     */
     let c = req.cookies;
+    console.log(c.login.username);
     res.end(c.login.username);
 })
 

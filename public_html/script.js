@@ -67,6 +67,7 @@ function logout() {
 }
 
 function getCurrUser() {
+    console.log('getting curr user');
     let url = '/app/getUsername';
     let p = fetch(url);
     p.then((response) => {
@@ -204,7 +205,6 @@ function searchUsers() {
 
     fetch(url)
         .then((response) => {
-            console.log(response);
             return response.text();
         })
         .then((text) => {
@@ -215,44 +215,49 @@ function searchUsers() {
             let username = getCurrUser();
             //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
             for(let i = 0; i < information.length; i++){
-                string += information[i].username;
+                console.log(information[i].username);
+                console.log(username);
 
-                console.log(information[i].username, "USERNAME")
-                console.log(information[i].outgoingRequests, "OUTGOING")
-                console.log(information[i].comingRequests, "COMING")
-                console.log();
+                if (information[i].username != username){
+                    string += '<div class="outerUserSearchArea"><div class="usernameSearch">' + information[i].username + '</div>';
 
-                for(let j = 0; j < information[i].comingRequests.length; j++){
-                    //console.log(information[i].comingRequests[j].username == username);
-                    if(information[i].comingRequests[j].username == username) {
-                        string += '<p>Waiting For Response</p>';
-                        console.log('1')
+                    console.log(information[i].username, "USERNAME")
+                    console.log(information[i].outgoingRequests, "OUTGOING")
+                    console.log(information[i].comingRequests, "COMING")
+                    console.log();
+
+                    for(let j = 0; j < information[i].comingRequests.length; j++){
+                        //console.log(information[i].comingRequests[j].username == username);
+                        if(information[i].comingRequests[j].username == username) {
+                            string += '<p class="statusP">Waiting For Response</p></div>';
+                            console.log('1')
+                            flag = 1;
+                        }
+                    }
+                    for(let j = 0; j < information[i].outgoingRequests.length; j++){
+                        if(information[i].outgoingRequests[j].username == username) {
+                            string += '<p class="statusP" >Request Recieved</p></div>';
+                            console.log('2')
+                            flag = 1;
+                        }
+                    }
+                    for(let j = 0; j < information[i].friends.length; j++){
+                        if(information[i].friends[j].username == username) {
+                            string += '<p class="statusP" >Already Friends</p></div>';
+                            flag = 1;
+                        }
+                    } 
+                    if(username == information[i].username){
                         flag = 1;
                     }
-                }
-                for(let j = 0; j < information[i].outgoingRequests.length; j++){
-                    if(information[i].outgoingRequests[j].username == username) {
-                        string += '<p>Request Recieved</p>';
-                        console.log('2')
-                        flag = 1;
+                    if(flag == 0) {
+                        console.log("ADD")
+                        string += `<div id="requestButton" class="friendReqButton"><input type="button" id="${information[i]._id}" value="Send Friend Request" onclick="sendFriendRequest('${information[i].username}')"></div></div>`
                     }
+                    
+                    element.innerHTML = string;
+                    flag = 0;
                 }
-                for(let j = 0; j < information[i].friends.length; j++){
-                    if(information[i].friends[j].username == username) {
-                        string += '<p>Already Friends</p>';
-                        flag = 1;
-                    }
-                } 
-                if(username == information[i].username){
-                    flag = 1;
-                }
-                if(flag == 0) {
-                    console.log("ADD")
-                    string += `<div id="requestButton"><input type="button" id="${information[i]._id}" value="Send Friend Request" onclick="sendFriendRequest('${information[i].username}')"></div>`
-                }
-                
-                element.innerHTML = string;
-                flag = 0;
             }
         }).catch((error) => {
             console.log("searching problem");
@@ -310,11 +315,11 @@ function displayFriends() {
             let requestString = '';
             for(let i = 0; i < information.friends.length; i++){
                 console.log(information.friends[i].username)
-                friendString += '<div>' + information.friends[i].username + '</div>';
+                friendString += '<div class="displayFriendsOutConsole"><div class="displayFriendsText">' + information.friends[i].username + '</div></div>';
             }
             for(let i= 0; i < information.comingRequests.length; i++) {
                 console.log(information.comingRequests[i]._id)
-                requestString += '<div>' + information.comingRequests[i].username + '</div>' + `<div><input type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div>`
+                requestString += '<div class="displayFriendReqOutConsole"><div class="displayFriendRequestText">' + information.comingRequests[i].username + '</div>' + `<div><input class="acceptFriendButton" type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div></div>`
                 
                 //'<div><input type="button" id="' + information[i]._id +'" value="Accept Friend" onclick="addFriend("'+ information[i].username+ '");></div>'
                 //`</div><div><input type="button" id="${information[i]._id}" value="Accept Friend Request" onclick="addFriend('${information[i].username}')"></div>`;
@@ -422,6 +427,8 @@ function search() {
 function directMessagePage() {
     window.location.href = '/app/dm.html';
 }
+
+let currUser = "";
 
 window.addEventListener('DOMContentLoaded', function() {
     // Use this as 'on new page load, if page is ___ do something
