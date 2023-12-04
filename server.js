@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 const multer = require("multer");
 const upload = multer( {dest: __dirname + '/public_html/img'} );
+const fetch = require('node-fetch');
 
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
@@ -21,7 +22,7 @@ var UserSchema = new Schema({
     hash: String,
     salt: Number,
     avatar: String, // change if needed
-    gender: { type: String, default: 'male' },
+    gender: String,
     outgoingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     comingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
@@ -160,11 +161,9 @@ app.post("/logout", (req, res) => {
 
 
 app.post('/add/user/', function(req, res) {
-    /* 
-        Adds a new user to the User collection of the database.
-    */
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
+    let genderIn = req.body.gender || 'male'; // Set default gender to 'male'
 
     let p1 = User.find({'username': usernameIn}).exec();
     p1.then( (results) => {
@@ -175,19 +174,25 @@ app.post('/add/user/', function(req, res) {
             let data = h.update(toHash, 'utf-8');
             let result = data.digest('hex');
 
-            let newUser = new User({username: usernameIn, hash: result, salt: newSalt});
+            let newUser = new User({
+                username: usernameIn, 
+                hash: result, 
+                salt: newSalt,
+                gender: genderIn // Using the default or provided gender
+            });
+
             let p = newUser.save();
             p.then(() => {
                 res.end('USER CREATED!');
-            });
-            p.catch(() => {
+            }).catch(() => {
                 res.end('DATABASE SAVE ISSUE');
             });
         } else {
-            res.end('USERNAME ALREADY TAKEN')
+            res.end('USERNAME ALREADY TAKEN');
         }
-    })
+    });
 });
+
 
 app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html reference
     if (req.file == undefined) {
@@ -236,40 +241,44 @@ app.get('/app/userInfo', (req, res) => {
         return res.status(401).send('User not logged in');
     }
 
-    User.findOne({username: username}, 'username gender', (err, user) => {
-        if (err) {
+    User.findOne({ username: username }, 'username gender')
+        .then(user => {
+            if (!user) {
+                console.log("User not found for username:", username);
+                return res.status(404).send("User not found");
+            }
+            console.log("User found:", user);
+            res.json({ username: user.username, gender: user.gender || 'Not set' });
+        })
+        .catch(err => {
             console.error("Database error:", err);
             return res.status(500).send("Error fetching user info");
-        }
-        if (!user) {
-            console.log("User not found for username:", username);
-            return res.status(404).send("User not found");
-        }
-        console.log("User found:", user);
-        res.json({username: user.username, gender: user.gender || 'Not set'});
-    });
+        });
 });
 
 
+
 app.post('/app/updateProfile', function(req, res) {
-    const { gender } = req.body; // Add other fields as needed
+    const { gender } = req.body; 
     const username = req.cookies.login?.username;
 
     if (!username) {
         return res.status(401).send('User not logged in');
     }
 
-    User.findOneAndUpdate({ username }, { $set: { gender } }, { new: true }, (err, updatedUser) => {
-        if (err) {
+    User.findOneAndUpdate({ username }, { $set: { gender } }, { new: true })
+        .then(updatedUser => {
+            if (!updatedUser) {
+                return res.status(404).send("User not found");
+            }
+            res.send("Profile updated successfully");
+        })
+        .catch(err => {
             console.error(err);
             return res.status(500).send("Error updating profile");
-        }
-        if (!updatedUser) {
-            return res.status(404).send("User not found");
-        }
-        res.send("Profile updated successfully");
-    });
+        });
 });
+
 
 app.get("/app/getFriends", (req, res) => {
     User.findOne( {username: req.cookies.login.username} )
@@ -438,39 +447,21 @@ app.post('/app/dms/post', function(req, res) {
 
 
 
-// app.get("/app/funkyAvatar", async (req, res) => {
-//     const uname = req.cookies.login.username;
-//     // Modify as needed to get the gender or other parameters
-//     const gender = 'male'; // Example, adjust as needed
-//     const avatarUrl = `https://funky-pixel-avatars.p.rapidapi.com/api/v1/avatar/generate/user?g=${gender}&uname=${uname}&fe=gif`;
 
-//     try {
-//         const avatarResponse = await fetch(avatarUrl, {
-//             method: 'GET',
-//             headers: {
-//                 'X-RapidAPI-Key': 'e597977b3amsh58f50df5ea831ddp18c578jsn7d9ca425de95',
-//                 'X-RapidAPI-Host': 'funky-pixel-avatars.p.rapidapi.com'
-//             }
-//         });
-//         const avatarResult = await avatarResponse.text();
+app.get("/app/customBoringAvatar", async (req, res) => {
+    const uname = req.cookies.login.username;
+    const variant = req.query.variant || "marble";
+    const colors = req.query.colors || "264653,2a9d8f,e9c46a,f4a261,e76f51";
+    const avatarUrl = `https://source.boringavatars.com/${variant}/120/${encodeURIComponent(uname)}?colors=${colors}&square`;
 
-//         User.findOneAndUpdate(
-//             { username: uname },
-//             { $set: { avatar: avatarResult } }
-//         )
-//         .then(() => {
-//             res.send(avatarResult); // Send the avatar URL to the client
-//         })
-//         .catch(err => {
-//             console.error("Error updating profile picture: " + err);
-//             res.status(500).send(err);
-//         });
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send(error);
-//     }
-// });
+    try {
+        await User.findOneAndUpdate({ username: uname }, { $set: { avatar: avatarUrl } });
+        res.send({ avatarUrl: avatarUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error setting custom avatar");
+    }
+});
 
 
 

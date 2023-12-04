@@ -132,31 +132,15 @@ function removeProfilePic() {
     })
 }
 
-function fetchProfilePic() { 
-    document.getElementById("avatar").innerHTML = ""; ///html reference, html needed, also if we add funky avatar it should be modify
-    let url = "/app/getProfilePic";
-    fetch(url)
-    .then( (response) => {
-        return response.text();
-    })
-    .then( (response) => {
-        if (response == "") {
-            document.getElementById("avatar").innerHTML += "<img src='../img/default.jpg' alt='Your profile picture' width='450px' height='450px'>";
-        }
-        else {
-            document.getElementById("avatar").innerHTML += "<img src='../img/" + response + "' alt='Your profile picture' width='450px;' height='450px'>";
-        }
-    })
-}
+
 function updateProfile() {
     const gender = document.getElementById('gender').value;
-    // Add other fields as needed
 
     fetch('/app/updateProfile', {
         method: 'POST',
         body: JSON.stringify({ gender }),
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include' // Important for sending cookies
+        credentials: 'include'
     })
     .then(response => {
         if (!response.ok) throw new Error('Profile update failed');
@@ -164,12 +148,15 @@ function updateProfile() {
     })
     .then(result => {
         console.log(result);
-        // Maybe redirect to the homepage or show a success message
+        alert("Profile updated successfully");
+        window.location.href = '/app/home.html'; // Redirect to home page
     })
     .catch(error => {
         console.error('Error:', error);
+        alert("Error updating profile");
     });
 }
+
 
 
 function goHome() { //return to homepage
@@ -472,21 +459,57 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-/////////funky pixel avatar generate code based on gender and username ,we can try later
-// function fetchFunkyAvatar() {
-//     document.getElementById("avatar").innerHTML = "Loading avatar..."; // a loading message
+function fetchProfilePic() { 
+    document.getElementById("avatar").innerHTML = "";
+    let url = "/app/getProfilePic";
+    fetch(url)
+    .then(response => response.text())
+    .then(avatarPath => {
+        if (avatarPath.startsWith("http")) {
+            // If the path is a full URL, use it directly
+            document.getElementById("avatar").innerHTML = `<img src="${avatarPath}" alt="Profile Picture" width="450px" height="450px">`;
+        } else if (avatarPath !== "") {
+            // If it's a local path, prepend the necessary directory
+            document.getElementById("avatar").innerHTML = `<img src="../img/${avatarPath}" alt="Profile Picture" width="450px" height="450px">`;
+        } else {
+            // Default avatar if no path is provided
+            document.getElementById("avatar").innerHTML = "<img src='../img/default.jpg' alt='Default Profile Picture' width='450px' height='450px'>";
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching profile picture:", error);
+        document.getElementById("avatar").innerHTML = "<p>Error fetching avatar. Please try again later.</p>";
+    });
+}
 
-//     fetch("/app/funkyAvatar")
-//     .then(response => response.text())
-//     .then(avatarUrl => {
-//         if (avatarUrl) {
-//             document.getElementById("avatar").innerHTML = `<img src="${avatarUrl}" alt="Your Funky Avatar" width="450px" height="450px">`;
-//         } else {
-//             document.getElementById("avatar").innerHTML = "<p>Failed to load Funky Avatar.</p>";
-//         }
-//     })
-//     .catch(error => {
-//         console.error("Error fetching Funky Avatar:", error);
-//         document.getElementById("avatar").innerHTML = "<p>Error fetching avatar.</p>";
-//     });
-// }
+
+
+function createCustomBoringAvatar() {
+    const variant = document.getElementById('avatarVariant').value;
+    const colors = [
+        document.getElementById('color1').value.substring(1),
+        document.getElementById('color2').value.substring(1),
+        document.getElementById('color3').value.substring(1),
+        document.getElementById('color4').value.substring(1),
+        document.getElementById('color5').value.substring(1)
+    ].join(',');
+
+    fetch(`/app/customBoringAvatar?variant=${variant}&colors=${colors}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.avatarUrl) {
+            document.getElementById("avatar").innerHTML = `<img src="${data.avatarUrl}" alt="Boring Avatar" width="450px" height="450px">`;
+            alert("Custom Boring Avatar created successfully");
+        } else {
+            alert("Failed to create Custom Boring Avatar");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error creating Custom Boring Avatar");
+    });
+}
+
+
+
+
