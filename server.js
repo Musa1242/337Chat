@@ -313,7 +313,7 @@ app.get("/app/getInfo/:user", (req, res) => {
     .then( (response) => {
         res.send(response);
     })
-})
+});
 
 app.get('/app/search/:type/:keyword', (req, res) => {
     if(req.params.type == "Users"){
@@ -334,7 +334,42 @@ app.get('/app/search/:type/:keyword', (req, res) => {
             res.json(document);
         });
     }
-})
+});
+
+app.get('/app/getMyPosts/:USERNAME', (req, res) => {
+    let usernameIn = req.params.USERNAME;
+
+    let p = Post.find({"username": usernameIn}).select('username content image').populate('comments').exec();
+    p.then((document) => {
+        res.json(document);
+    });
+});
+
+app.get('/app/getFriendsPosts/:USERNAME', async (req, res) => {
+    let usernameIn = req.params.USERNAME;
+
+    console.log('server trying to display friend');
+
+    try {
+        let usernameIn = req.params.USERNAME;
+    
+        const user = await User.findOne({ username: usernameIn }).populate('friends');
+
+
+        let friendsList = [];
+
+        for (let i = 0; i<user.friends.length; i++){
+            friendsList.push(user.friends[i].username);
+        }
+    
+        const friendsPosts = await Post.find({ username: { $in: friendsList } }).sort({ time: 'asc' }).select('username content image').populate('comments').exec();
+    
+        res.json(friendsPosts);
+      } catch (error) {
+
+        console.error(error);
+      }
+});
 
 app.get('/app/addFriend/:username/', function(req, res) {
     let p = User.find({"username": req.params.username}).exec();
@@ -388,7 +423,7 @@ app.get('/app/friendRequest/:username', function(req, res){
         }}).catch((error) => {
             console.log(error);
         });
-})
+});
 
 app.get('/app/get/friends', function(req, res) {
     console.log('22')
@@ -499,8 +534,7 @@ app.post('/app/dms/post', function(req, res) {
 
     let newDM = new DirectMessage({time: timeIn, user: userIn, recipient: recipientIn, message: messageIn});
     return newDM.save();
-})
-
+});
 
 
 

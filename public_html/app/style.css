@@ -1,5 +1,5 @@
 body {
-	background-color: grey;
+	background-color: white;
 	text-align: center;
 }
 
@@ -35,25 +35,45 @@ h3 {
 	top: 20px;
 	left: 20px;
 	z-index: 50; 
-  }
+}
   
-  #avatar img {
+#avatar img {
 	border-radius: 50%; 
 	width: 80px; 
 	height: 80px; 
 	object-fit: cover; 
-  }
+	margin-top: 10px;
+}
   
-  #profile {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-	border: 2px solid black;
-	padding: 10px;
+#profile {
+	display: block;
 	background-color: white;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	border-radius: 10px;
-  }
+	width: 500px;
+	height: fit-content;
+	border-radius: 30px;
+	margin-left: auto;
+	margin-right:auto;
+	padding-bottom: 10px;
+}
+
+#profileCats{
+	display: block;
+}
+
+#profSect1 {
+	display: block;
+}
+
+#profSect2 {
+	display: block;
+}
+
+.userInfo{
+	font-family: Verdana;
+	font-size: 15px;
+	display: inline-block;
+	margin-left: 15px;
+}
   
 #logo {
 	position: fixed;
@@ -291,4 +311,226 @@ h3 {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 20px;
+}
+
+
+
+
+
+
+#navArea{
+    width: fit-content;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.navButton{
+    margin-right:10px;
+    display: inline-block;
+    width: 100px;
+    margin-top: 5px;
+}
+
+#homeTitleArea {
+    height: 10vh;
+    min-height: 51px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+#homeLogo {
+    display: inline;
+    width: 200px;
+    margin-top: 10px;
+}
+
+#homeTitle {
+    font-family: Verdana;
+    font-size: 40px;
+    font-weight:bold;
+    color: rgb(159,160,162);
+    margin: 0px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#homePageLabel {
+    display: block;
+}
+
+#homeAreaContainer {
+    display:block;
+    min-width: 400px;
+    width: fit-content;
+    background-color: rgb(81,105,145);
+    border-radius: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y:auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+#myPostsOuterArea {
+    display: inline-block;
+    width: 350px;
+    height: 425px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+#myPostsArea {
+    background-color: white;
+    width: 350px;
+    height: 360px;
+    border-radius: 30px;
+    text-align: left;
+    text-indent: 40px;
+    overflow-y:auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#friendPostsOuterArea {
+    display: inline-block;
+    width: 350px;
+    height: 425px;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+#friendPostsArea {
+    background-color: white;
+    border-radius: 30px;
+    width: 350px;
+    height: 360px;
+    text-align: left;
+    text-indent: 40px;
+    overflow-y:auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+.homeLabel {
+    font-family: 'Verdana';
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    text-indent: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#avatar {
+	display: inline;
+}
+
+
+
+
+
+
+
+.postImgDisplayDiv {
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    max-height: 200px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.postSearchImage {
+    margin-top: 0px;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 0; 
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.postDisplay {
+    width: 90%;
+    height: fit-content;
+    border: 2px solid rgb(159,160,162);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.postUsernameDisplay {
+    font-family: Verdana;
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: inline;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.postCaptionDisplay{
+    display: inline;
+    font-family: Verdana;
+}
+
+.indCommentDisplay{
+    display: block;
+}
+
+.postCommentsDisplay{
+    margin-top: 15px;
+    width: 100%;
+    height: 100px;
+    overflow-y: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.commentsDisplayLabel{
+    display: block;
+    font-family: Verdana;
+    font-size: 15px;
+    margin-bottom:5px;
+    font-weight:bolder;
+    margin-top: 10px;
+}
+
+.commentsUserDisplay {
+    display: inline;
+    font-family: Verdana;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.commentsContentDisplay{
+    display: inline;
+    font-family: Verdana;
+    font-size: 15px;
+}
+
+.commentButton {
+    display: inline;
+}
+
+.commentText {
+    width: 150px;
 }

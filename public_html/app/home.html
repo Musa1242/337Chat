@@ -7,63 +7,78 @@
 	</head>
 
 	<body>
-		<div id="profile-container">
-		<div id="avatar">
-			<img id="avatar" alt="avatar" width="50px">
-
+		<div id="homeTitleArea">
+			<img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="homeLogo">
+            <div id="homeTitle">Home</div>
 		</div>
-		<div id="profile">
-			<div id="username" class="userInfo">
-				<h3>Username:</h3>
-			</div>
-			<div id="gender" class="userInfo">
-				<h3>Gender:</h3>
-			</div>
-			<div id="postCount" class="userInfo">
-				<h3>Posts: 0 posts</h3>
-			</div>
-			<div id="friendCount" class="userInfo">
-				<h3>Friends: 0 friends</h3>
-			</div>
-		</div></div>
+		<div id="homeAreaContainer">
+			<div id="profileInfoOuterArea">
+				<div id="profile-container"></div>
+				
 
-		<div id="logo">
-			<img src="../337Chat_logo.png" 
-			alt="337Chat logo"
-			width=500px
-			height=200px >
+				<div id="profile">
+					<div id="avatar">
+						<img id="avatar" alt="avatar" width="50px">
+					</div>
+					<div id="profileCats">
+						<div id="profSect1">
+							<div id="username" class="userInfo">
+							</div>
+							<div id="gender" class="userInfo">
+								<h3>Gender: Male</h3>
+							</div>
+						</div>
+						<div id="profSect2">
+							<div id="postCount" class="userInfo">
+								<h3>Posts: 0 posts</h3>
+							</div>
+							<div id="friendCount" class="userInfo">
+								<h3>Friends: 0 friends</h3>
+							</div>
+						</div>
+					</div>
+					<button type="button" onclick="goUpdate();" id="updateProfileBtn">Update Profile</button>
+				</div>
+			</div>
+
+			<div id="myPostsOuterArea">
+				<div id="myPostsLabel" class="homeLabel">
+					My Posts:
+				</div>
+				<div id="myPostsArea">
+					<div id="myPostsInnerArea">
+						
+					</div>
+				</div>
+			</div>
+
+			<div id="friendPostsOuterArea">
+				<div id="friendPostsLabel" class="homeLabel">
+					Friends Posts:
+				</div>
+				<div id="friendPostsArea">
+					<div id="friendPostsInnerArea">
+
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<div id="ownFeed" class="feeds">
-			<h2>My Posts</h2>
-			<div id="myPost" class="post">
-				<img src="example.png"
-				alt="Example post picture"
-				width=75%>
-				<h4>Example post</h4>			
-			</div>
-		</div>
-
-		<div id="friendFeed" class="feeds">
-			<h2>Friend's Posts</h2>
+		<div id="navArea">
+			<button type="button" class="navButton" onclick="goHome();">Home</button>
+			<button type="button" class="navButton" onclick="search();">Search</button>
+			<button type="button" class="navButton" onclick="goPost();">Post</button>
+			<button type="button" class="navButton" onclick="goFriends();">Friends</button>
+			<button type="button" class="navButton" onclick="directMessagePage();">DM's</button>
+			<button type="button" class="navButton" onclick="logout();">Logout</button>
 		</div>
 		
-		<input type="button" onclick="goPost();" id="newPostButton"  class="button" value="NEW POST">
-
-		<input type="button" onclick=changeProfile(); id="changeProfileButton" class="button" value="UPDATE PROFILE">
-
-		<input type="button" onclick=search(); id="searchButton" class="button" value="SEARCH">
-		
-		<input type="button" onclick=login(); id="loginButton"  class="button" value="LOGIN PAGE">
-
-		<input type="button" onclick="directMessagePage();" id="directMessageButton" class="button" value="DIRECT MESSAGES">
-		<input type="button" onclick=logout(); id="Logout"  class="button" value="Logout">
-		<a href="./friends.html">Friends</a>
-
         <script src="/script.js"></script>
 		<script>
             fetchProfilePic();
 			fetchUserInfo();
+			updateUsernameHome();
+			displayMyPosts();
+			displayFriendsPosts();
         </script>
 	</body>
 </html>

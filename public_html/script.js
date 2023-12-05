@@ -690,6 +690,20 @@ function goPost() {
     window.location.href = '/app/post.html';
 }
 
+function goUpdate() {
+    window.location.href = '/app/update_profile.html';
+}
+
+function updateUsernameHome() {
+    let userArea = document.getElementById("username");
+
+    let username = getCookieValue('login');
+
+    let htmlString = `<h3>Username:` + username + `</h3>`;
+
+    userArea.innerHTML = htmlString;
+}
+
 let currUser = "";
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -754,6 +768,148 @@ function createCustomBoringAvatar() {
     });
 }
 
+function displayMyPosts(){
+    let username = getCookieValue('login');
+
+    let url = '/app/getMyPosts/' + username
+
+    let p = fetch(url)
+    p.then((response) => {
+        return response.text();
+    })
+    .then((text) => {
+        let information = JSON.parse(text);
+        let element = document.getElementById("myPostsInnerArea");
+        element.innerHTML = "";
+
+        for(let i = 0; i < information.length; i++){
+            let postUsername = information[i].username;
+            let image = information[i].image;
+            let caption = information[i].content;
+            let comments = information[i].comments;
+            let postId = information[i]._id;
+            let username = getCookieValue('login');
+
+            console.log('info check displayMyPosts: ', information[i]);
+
+            let commentString = '';
+            for (let j = 0; j < comments.length; j++){
+                commentString += `<div class="indCommentDisplay">`+ `<div class="commentsUserDisplay">` + comments[j].username + ' ' +`</div>` + `<div class="commentsContentDisplay">` + comments[j].content + `</div></div>`;
+            }
+
+            let htmlString = '';
+
+            let addCommentSection = `<input type="text" class="commentText" id="`+ postId +`" name="commentText">`;
+
+            addCommentSection += `<input type="button" class="commentButton" value="Add Comment" onclick="addComment(\'` + postId + `\', \'` + username + `\');">`;
+            
+            if (typeof image == 'undefined') {
+                console.log('undefined');
+                htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else if (image.startsWith("http")) {
+                // If the path is a full URL, use it directly
+                htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else if (image !== "") {
+                // If it's a local path, prepend the necessary directory
+                htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="../img/${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else {
+                // Default avatar if no path is provided
+                htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            }
+            
+            element.innerHTML += htmlString;
+        }
+    })
+    .catch((error) => {
+        console.log("error finding myPosts");
+        console.log(error);
+    })
+}
 
 
+function displayFriendsPosts(){
+
+    console.log('trying to display friends');
+    let username = getCookieValue('login');
+
+    let url = '/app/getFriendsPosts/' + username
+
+    let p = fetch(url)
+    p.then((response) => {
+        return response.text();
+    })
+    .then((text) => {
+        let information = JSON.parse(text);
+        let element = document.getElementById("friendPostsInnerArea");
+        element.innerHTML = "";
+
+        console.log('information: ', information);
+
+        for(let i = 0; i < information.length; i++){
+            let postUsername = information[i].username;
+            let image = information[i].image;
+            let caption = information[i].content;
+            let comments = information[i].comments;
+            let postId = information[i]._id;
+            let username = getCookieValue('login');
+
+            console.log('info check displayFriendsPosts: ', information[i]);
+
+            let commentString = '';
+            for (let j = 0; j < comments.length; j++){
+                commentString += `<div class="indCommentDisplay">`+ `<div class="commentsUserDisplay">` + comments[j].username + ' ' +`</div>` + `<div class="commentsContentDisplay">` + comments[j].content + `</div></div>`;
+            }
+
+            let htmlString = '';
+
+            let addCommentSection = `<input type="text" class="commentText" id="`+ postId +`" name="commentText">`;
+
+            addCommentSection += `<input type="button" class="commentButton" value="Add Comment" onclick="addComment(\'` + postId + `\', \'` + username + `\');">`;
+            
+            if (typeof image == 'undefined') {
+                console.log('undefined');
+                htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else if (image.startsWith("http")) {
+                // If the path is a full URL, use it directly
+                htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else if (image !== "") {
+                // If it's a local path, prepend the necessary directory
+                htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="../img/${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            } else {
+                // Default avatar if no path is provided
+                htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                commentString +`</div>`+ addCommentSection +`</div>`;
+            }
+            
+            element.innerHTML += htmlString;
+        }
+    })
+    .catch((error) => {
+        console.log("error finding myPosts");
+        console.log(error);
+    })
+}
 
