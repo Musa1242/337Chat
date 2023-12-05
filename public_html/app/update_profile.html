@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Profile</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <form id="updateProfileForm">
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="non-binary">non-binary</option>
-        </select>
-
-        <label for="img">Profile Picture:</label>
-        <input type="file" id="img" name="img" accept="image/*">
-        <input type="file" id="avatar" name="img" accept="image/*">
-        <p id="imgStatus"></p>
-        <button type="button" onclick="updateProfile()">Change User Info</button>
-        <button type="button" onclick="setProfilePic()">Change profile picture</button>
-        
-        
-        
-    <label for="avatarVariant">Avatar Variant:</label>
-        <select id="avatarVariant">
-            <option value="marble">Marble</option>
-            <option value="beam">Beam</option>
-            <option value="pixel">Pixel</option>
-            <option value="sunset">Sunset</option>
-            <option value="ring">Ring</option>
-            <option value="bauhaus">Bauhaus</option>
-        </select>
-
-        <div>
-            <label>Avatar Colors:</label>
-            <input type="color" id="color1" value="#264653">
-            <input type="color" id="color2" value="#2a9d8f">
-            <input type="color" id="color3" value="#e9c46a">
-            <input type="color" id="color4" value="#f4a261">
-            <input type="color" id="color5" value="#e76f51">
+    <head>
+        <meta charset="UTF-8">
+        <title>Update Profile</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body id="updateProfileBody">
+        <div id="updateProfTitleArea">
+            <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="updateLogo">
+            <div id="updateLabel" class="updatePageLabel">Update Profile</div>
         </div>
 
-        <button type="button" onclick="createCustomBoringAvatar()">Create Custom Avatar</button>
-        <button type="button" onclick="removeProfilePic()">Remove profile picture</button>
+        <div id="updateFormArea">
+            <form id="updateProfileForm">
+                <div id="generalUpdateArea">
+                    <div id="detailsProfileLabel" class="updatePageLabel">Update Details:</div>
+
+                    <label for="gender" id="genderLabel">Gender:</label>
+                    <select id="gender" name="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="non-binary">non-binary</option>
+                    </select>
+
+                    <button type="button" id="changeInfoBtn" onclick="updateProfile()">Change User Info</button>
+                </div>
+            
+                <div id="updateAvatarArea">
+                    <div id="uploadAvatarLabel" class="updatePageLabel">Upload Avatar:</div>
+                    <div id="innerUploadArea">
+                        <label for="img" id="profPicLbl">Profile Picture:</label>
+                        <input type="file" id="img" class="inputImg" name="img" accept="image/*">
+                        <input type="file" id="avatar" class="inputImg" name="img" accept="image/*">
+                        <p id="imgStatus"></p>
+                    </div>
+                    
+                    <button type="button" id="changePicBtn" onclick="setProfilePic()">Submit</button>
+                    
+                    <div id="customAvatarLabel" class="updatePageLabel">Create Custom Avatar:</div>
+
+                    <div id="variantArea">
+                        <label for="avatarVariant" id="variantLabel">Avatar Variant:</label>
+                        <select id="avatarVariant">
+                            <option value="marble">Marble</option>
+                            <option value="beam">Beam</option>
+                            <option value="pixel">Pixel</option>
+                            <option value="sunset">Sunset</option>
+                            <option value="ring">Ring</option>
+                            <option value="bauhaus">Bauhaus</option>
+                        </select>
+                    </div>
+            
+                    <div id="colorsArea">
+                        <label id="avColorsLabel">Avatar Colors:</label>
+                        <div id="colorsDiv">
+                            <input type="color" id="color1" value="#264653" class="avColor">
+                            <input type="color" id="color2" value="#2a9d8f" class="avColor">
+                            <input type="color" id="color3" value="#e9c46a" class="avColor">
+                            <input type="color" id="color4" value="#f4a261" class="avColor">
+                            <input type="color" id="color5" value="#e76f51" class="avColor">
+                        </div>
+                    </div>
+
+                    <button type="button" id="createAvButton" onclick="createCustomBoringAvatar()">Create Custom Avatar</button>
+                    <button type="button" id="changePicBtn2" onclick="setProfilePic()">Submit</button>
+
+                    <div id="removeAvatarLabel" class="updatePageLabel">Remove Current Avatar:</div>
+                    <button type="button" id="remCurrAvBtn" onclick="removeProfilePic()">Remove Current</button>
+                </div>
+            </form>
+        </div>
         <button type="button" onclick="goHome()">Return home</button>
         <script src="/script.js"></script>
         <script>
             fetchProfilePic();
         </script>
-    </form>
-    
-</body>
+    </body>
 </html>
