@@ -126,13 +126,29 @@ body {
     padding-right: 10px;
 }
 
+.avatarDisplay {
+    margin-top: 2px;
+    margin-left: 5px;
+    margin-right: 10px;
+    padding-left: 0px;
+    width: 45px;
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
+img {
+    float: left;
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
 .displayFriendsText{
     font-family: Verdana;
     font-size: 25px;
     display: inline;
     margin-left: 0px;
     margin-top:8px;
-    width: 300px;
+    width: fit-content;
     text-indent: 8px;
 }
 
@@ -146,7 +162,6 @@ body {
     border-radius: 10px;
     border: 2px solid rgb(159,160,162);
     margin-top: 10px;
-    margin-top: 20px;
     padding-right: 10px
 }
 

@@ -368,6 +368,7 @@ app.get('/app/get/friends', function(req, res) {
     let information = {};
     information.friends = [];
     information.comingRequests = [];
+    information.avatar = "";
     let p = User.find({'username': req.cookies.login.username}).exec();
     p.then((document) => {
         if(document[0].friends.length == 0 && document[0].comingRequests.length == 0){

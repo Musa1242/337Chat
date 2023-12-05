@@ -332,15 +332,47 @@ function displayFriends() {
             console.log('3');
             let friends = document.getElementById('friends');
             let friendRequests = document.getElementById('friendRequests');
+            console.log(information);
+            
             let friendString = '';
             let requestString = '';
+
             for(let i = 0; i < information.friends.length; i++){
-                console.log(information.friends[i].username)
-                friendString += '<div class="displayFriendsOutConsole"><div class="displayFriendsText">' + information.friends[i].username + '</div></div>';
+                console.log(information.friends[i].username);
+                let avatar = information.friends[i].avatar;
+                let avatarPath = "";
+
+                if (avatar.startsWith("http")) {
+                    // If the path is a full URL, use it directly
+                    avatarPath = `<div class="avatarDisplay"><img src="${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                } else if (avatar !== "") {
+                    // If it's a local path, prepend the necessary directory
+                    avatarPath = `<div class="avatarDisplay"><img src="../img/${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                } else {
+                    // Default avatar if no path is provided
+                    avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                }
+
+                friendString += '<div class="displayFriendsOutConsole">'+ avatarPath +'<div class="displayFriendsText">' + information.friends[i].username + '</div></div>';
             }
             for(let i= 0; i < information.comingRequests.length; i++) {
-                console.log(information.comingRequests[i]._id)
-                requestString += '<div class="displayFriendReqOutConsole"><div class="displayFriendRequestText">' + information.comingRequests[i].username + '</div>' + `<div><input class="acceptFriendButton" type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div></div>`
+                console.log(information.comingRequests[i]._id);
+
+                let avatar = information.comingRequests[i].avatar;
+                let avatarPath = "";
+
+                if (avatar.startsWith("http")) {
+                    // If the path is a full URL, use it directly
+                    avatarPath = `<div class="avatarDisplay"><img src="${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                } else if (avatar !== "") {
+                    // If it's a local path, prepend the necessary directory
+                    avatarPath = `<div class="avatarDisplay"><img src="../img/${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                } else {
+                    // Default avatar if no path is provided
+                    avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                }
+
+                requestString += '<div class="displayFriendReqOutConsole">'+ avatarPath +'<div class="displayFriendRequestText">' + information.comingRequests[i].username + '</div>' + `<div><input class="acceptFriendButton" type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div></div>`
                 
                 //'<div><input type="button" id="' + information[i]._id +'" value="Accept Friend" onclick="addFriend("'+ information[i].username+ '");></div>'
                 //`</div><div><input type="button" id="${information[i]._id}" value="Accept Friend Request" onclick="addFriend('${information[i].username}')"></div>`;
