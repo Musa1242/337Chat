@@ -316,3 +316,100 @@ img {
     display: inline-block;
     width: fit-content;
 }
+
+
+#postTitleArea {
+    height: 10vh;
+    min-height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#postLogo {
+    display: inline;
+    width: 200px;
+    margin-top: 10px;
+}
+
+#postTitle {
+    font-family: Verdana;
+    font-size:40px;
+    font-weight: bold;
+    color: rgb(159,160,162);
+    margin: 0px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#postBody {
+    display: block;
+    margin: 0px;
+    background-color:white;
+    overflow-y: hidden;
+    overflow-x:auto;
+}
+
+#postInnerBody {
+    height: fit-content;
+    padding-bottom: 40px;
+    width: 50%;
+    min-width: 450px;
+    display: block;
+    background-color: rgb(81,105,145);
+    overflow-y: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius:30px;
+}
+
+#postArea {
+    border-radius: 30px;
+    background-color: white;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: fit-content;
+    padding-bottom: 20px;
+    width: 90%;
+    overflow-y: auto;
+    text-align: center;
+    margin-top: 40px;
+}
+
+#postImgArea {
+    width:300px;
+    height:300px;
+    display: block;
+    border: 3px solid black;
+    margin-top: 20px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#captionLabel{
+    font-family: Verdana;
+    font-size: 20px;
+}
+
+#captionArea{
+    display:block;
+}
+
+#captionBox {
+    margin-top: 20px;
+    width: 300px;
+}
+
+#addImgArea {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#postImgLabel {
+    font: Verdana;
+    font-size: 20px;
+}

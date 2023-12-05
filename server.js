@@ -29,6 +29,7 @@ var UserSchema = new Schema({
     posts: [mongoose.Schema.Types.ObjectId]
     //age: Number, if needed
 });
+
 var User = mongoose.model('User', UserSchema);
 const Comment = new mongoose.model("comment", new mongoose.Schema(
     {
@@ -40,11 +41,11 @@ const Comment = new mongoose.model("comment", new mongoose.Schema(
 
 const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will definitely add to this more as needed
     {
-        poster: String,
-        salt: Number,
+        username: String,
+        time: Number,
+        image: String,
         content: String,
-        avatar: String,
-        images: [String],
+        comments: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}],
         //friends: [mongoose.Schema.Types.ObjectId],
         posts: [mongoose.Schema.Types.ObjectId]
     }

@@ -220,11 +220,15 @@ h3 {
 	margin-left: 10px;
 }
 
-.inputImg {
+.inputImg, .inputImg2 {
 	margin-top: 10px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.inputImg2 {
+	visibility: hidden;
 }
 
 #profPicLbl {

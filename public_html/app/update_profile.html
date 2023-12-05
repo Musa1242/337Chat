@@ -31,7 +31,6 @@
                     <div id="innerUploadArea">
                         <label for="img" id="profPicLbl">Profile Picture:</label>
                         <input type="file" id="img" class="inputImg" name="img" accept="image/*">
-                        <input type="file" id="avatar" class="inputImg" name="img" accept="image/*">
                         <p id="imgStatus"></p>
                     </div>
                     
@@ -62,6 +61,7 @@
                         </div>
                     </div>
 
+                    <input type="file" id="avatar" class="inputImg2" name="img" accept="image/*" aria-hidden="true">
                     <button type="button" id="createAvButton" onclick="createCustomBoringAvatar()">Create Custom Avatar</button>
                     <button type="button" id="changePicBtn2" onclick="setProfilePic()">Submit</button>
 

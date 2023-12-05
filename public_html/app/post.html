@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8"/>
+        <title>337chat</title>
+        <link id="cssFile" rel="stylesheet" type="text/css" href="../style.css">
+        <script src="../script.js" defer></script>
+    </head>
+    <body id="postBody">
+        <div id="postTitleArea">
+            <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="postLogo">
+            <div id="postTitle">Create A Post</div>
+        </div>
+
+        <div id="postInnerBody">
+            <div id="postArea">
+                <div id="postImgArea">
+
+                </div>
+                <div id="addImgArea">
+                    <label for="postImg" id="postImgLabel">Add Image:</label>
+                    <input type="file" id="postImg" name="postImg" accept="image/*">
+                </div>
+                
+                <div id="captionArea">
+                    <label for="captionBox" id="captionLabel">Caption:</label>
+                    <input type="text" id="captionBox" name="captionBox">
+                </div>
+            </div>
+        </div>
+
+        <div id="navAreaSearch">
+            <button type="button" class="navButton" onclick="goHome();">Home</button>
+            <button type="button" class="navButton" onclick="search();">Search</button>
+            <button type="button" class="navButton">Post</button>
+            <button type="button" class="navButton" onclick="goFriends();">Friends</button>
+            <button type="button" class="navButton" onclick="directMessagePage();">DM's</button>
+            <button type="button" class="navButton" onclick="logout();">Logout</button>
+        </div>
+    </body>
+</html>
