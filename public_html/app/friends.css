@@ -3,6 +3,21 @@ body {
     text-align: center;
 }
 
+#navArea{
+    width: fit-content;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+}
+
+.navButton{
+    margin-right:10px;
+    display: inline-block;
+    width: 100px;
+    margin-top: 5px;
+}
+
 #friendsTitleArea {
     height: 10vh;
     min-height: 51px;

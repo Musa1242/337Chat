@@ -237,6 +237,29 @@
     margin-bottom: 20px;
 }
 
+#navArea{
+    width: fit-content;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5px;
+}
+
+.navButton{
+    margin-right:10px;
+    display: inline-block;
+    width: 100px;
+    margin-top: 5px;
+}
+
+#navAreaSearch{
+    width: fit-content;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+}
+
 .outerUserSearchArea {
     display: flex;
     width: fit-content;

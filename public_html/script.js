@@ -162,9 +162,11 @@ function updateProfile() {
 function goHome() { //return to homepage
     window.location.href = window.location.origin + "/app/home.html";
 }
+
 function changeProfile() { //open update profile
     window.location.href = window.location.origin + "/app/update_profile.html";
 }
+
 function getFriends() {
     let url = "/app/getFriends";
     fetch(url)
@@ -470,6 +472,10 @@ function search() {
 
 function directMessagePage() {
     window.location.href = '/app/dm.html';
+}
+
+function goFriends() {
+    window.location.href = '/app/friends.html';
 }
 
 let currUser = "";

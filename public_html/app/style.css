@@ -11,6 +11,21 @@ h3 {
 	font-size: 20px;
 }
 
+#navArea{
+    width: fit-content;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5px;
+}
+
+.navButton{
+    margin-right:10px;
+    display: inline-block;
+    width: 100px;
+    margin-top: 5px;
+}
+
 #profile-container {
 	display: flex;
 	align-items: flex-start;
