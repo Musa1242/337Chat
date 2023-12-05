@@ -222,6 +222,25 @@ app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html 
     }
 });
 
+
+
+app.post("/app/addPostImage", upload.single("image"), (req, res) => { ///needed to html reference
+    
+    let newPost = new Post({
+        username: req.cookies.login.username, 
+        caption: req.body.caption, 
+        time: req.body.currTime,
+        image: req.file.filename
+    });
+    
+    let p = newPost.save();
+    p.then(() => {
+        res.end('POST CREATED!');
+    }).catch(() => {
+        res.end('DATABASE SAVE ISSUE');
+    });
+});
+
 app.get("/app/getProfilePic", (req, res) => {
     User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {

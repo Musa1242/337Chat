@@ -19,12 +19,14 @@
                 </div>
                 <div id="addImgArea">
                     <label for="postImg" id="postImgLabel">Add Image:</label>
-                    <input type="file" id="postImg" name="postImg" accept="image/*">
+                    <input type="file" id="postImg" name="postImg" accept="image/*" onchange="displayPostPreview();">
+                    <p id="imgStatus"></p>
                 </div>
                 
                 <div id="captionArea">
                     <label for="captionBox" id="captionLabel">Caption:</label>
                     <input type="text" id="captionBox" name="captionBox">
+                    <button type="button" id="submitPostButton" onclick="setPostPic();">Submit</button>
                 </div>
             </div>
         </div>

@@ -117,6 +117,57 @@ function setProfilePic() {
     }
 }
 
+
+
+function displayPostPreview() {
+    let fileInput = document.getElementById('postImg');
+    let imagePreview = document.getElementById('postImgArea');
+    let imageStatus = document.getElementById('imgStatus');
+  
+    if (fileInput.files.length > 0) {
+      imageStatus.innerText = '';
+      const reader = new FileReader();
+  
+      reader.onload = function (e) {
+        let postPrevHtml = `<img src="${e.target.result}" alt="Post Preview" width="300px" height="300px" id="postImgPreview">`;
+  
+        imagePreview.innerHTML = '';
+        imagePreview.innerHTML = postPrevHtml;
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      imagePreview.innerHTML = '';
+      imageStatus.innerText = 'No Image Selected';
+    }
+  }
+
+function setPostPic() {
+    console.log('setting post picture');
+    document.getElementById("imgStatus").innerText = "";
+    let caption = document.getElementById("captionBox").innerText;
+    let currTime = Date.now();
+
+    if (document.getElementById("postImg").files.length == 0) {
+        document.getElementById("imgStatus").innerText = "Cannot leave field empty";
+    } else {
+        let formData = new FormData();
+        formData.append("image", document.getElementById("postImg").files[0]);
+        formData.append("caption", caption);
+        formData.append("currTime", currTime);
+        let url = "/app/addPostImage";
+        fetch(url,
+            {
+                method: "POST",
+                body: formData
+            })
+        .then( (response) => {
+            document.getElementById("postImg").value = "";
+        })
+    }
+    window.location.href = '/app/home.html';
+}
+
 function removeProfilePic() {
     document.getElementById("img").value = ""; ///html reference, html needed
     let formData = new FormData();

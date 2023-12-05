@@ -347,8 +347,9 @@ img {
     display: block;
     margin: 0px;
     background-color:white;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x:auto;
+    padding-bottom: 5px;
 }
 
 #postInnerBody {
@@ -362,6 +363,13 @@ img {
     margin-left: auto;
     margin-right: auto;
     border-radius:30px;
+}
+
+#submitPostButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
 }
 
 #postArea {
@@ -383,7 +391,7 @@ img {
     height:300px;
     display: block;
     border: 3px solid black;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -398,7 +406,7 @@ img {
 }
 
 #captionBox {
-    margin-top: 20px;
+    margin-top: 5px;
     width: 300px;
 }
 
@@ -412,4 +420,9 @@ img {
 #postImgLabel {
     font: Verdana;
     font-size: 20px;
+}
+
+#postImgPreview {
+    object-fit: cover; 
+    border-radius: 0; 
 }
