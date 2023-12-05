@@ -589,6 +589,25 @@ app.post('/add/comment', function(req, res) {
     });
 });
 
+app.get('/app/getUserCounts/:USERNAME', async (req, res) => {
+    try {
+        let username = req.params.USERNAME;
+    
+        const user = await User.findOne({'username': username }).populate('friends').exec();
+        const postsCount = await Post.countDocuments({ username }).exec();
+    
+        const userDetails = {
+          postsCount,
+          friendsCount: user.friends.length,
+          gender: user.gender,
+        };
+    
+        res.json(userDetails);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 
 app.listen(port, () =>
 console.log(

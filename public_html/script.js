@@ -913,3 +913,38 @@ function displayFriendsPosts(){
     })
 }
 
+function updateUserInfo() {
+    let username = getCookieValue('login');
+
+    let url = '/app/getUserCounts/' + username;
+
+    let p = fetch(url);
+    p.then((response) => {
+        return response.text();
+    })
+    .then((text) => {
+
+        let information = JSON.parse(text);
+
+        console.log('user info: ', information);
+
+        let genderIn = information.gender;
+        let postCount = information.postsCount;
+        let friendsCount = information.friendsCount;
+
+        console.lo
+
+        let genderArea = document.getElementById("gender");
+        let postsArea = document.getElementById("postCount");
+        let friendsArea = document.getElementById("friendCount");
+
+        let genderString = `<h3>Gender: ` + genderIn + `</h3>`;
+        let postsString = `<h3>Posts: ` + postCount + " " + `Post(s)</h3>`;
+        let friendsString = `<h3>Friends: ` + friendsCount + " " + `Friend(s)</h3>`;
+
+        genderArea.innerHTML = genderString;
+        postsArea.innerHTML = postsString;
+        friendsArea.innerHTML = friendsString;
+    })
+}
+
