@@ -240,7 +240,25 @@ function searchUsers() {
                 console.log(username);
 
                 if (information[i].username != username){
-                    string += '<div class="outerUserSearchArea"><div class="usernameSearch">' + information[i].username + '</div>';
+                    console.log('info: ', information[i]);
+                    let avatar1 = information[i].avatar;
+                    let avatarPath = "";
+
+                    if (typeof avatar1 == 'undefined') {
+                        console.log('undefined');
+                        avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                    } else if (avatar1.startsWith("http")) {
+                        // If the path is a full URL, use it directly
+                        avatarPath = `<div class="avatarDisplay"><img src="${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                    } else if (avatar1 !== "") {
+                        // If it's a local path, prepend the necessary directory
+                        avatarPath = `<div class="avatarDisplay"><img src="../img/${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                    } else {
+                        // Default avatar if no path is provided
+                        avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                    }
+
+                    string += '<div class="outerUserSearchArea">'+ avatarPath +'<div class="usernameSearch">' + information[i].username + '</div>';
 
                     console.log(information[i].username, "USERNAME")
                     console.log(information[i].outgoingRequests, "OUTGOING")
@@ -342,7 +360,9 @@ function displayFriends() {
                 let avatar = information.friends[i].avatar;
                 let avatarPath = "";
 
-                if (avatar.startsWith("http")) {
+                if(typeof avatar == 'undefined'){
+                    avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                } else if (avatar.startsWith("http")) {
                     // If the path is a full URL, use it directly
                     avatarPath = `<div class="avatarDisplay"><img src="${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
                 } else if (avatar !== "") {
@@ -361,7 +381,9 @@ function displayFriends() {
                 let avatar = information.comingRequests[i].avatar;
                 let avatarPath = "";
 
-                if (avatar.startsWith("http")) {
+                if(typeof avatar == 'undefined'){
+                    avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                } else if (avatar.startsWith("http")) {
                     // If the path is a full URL, use it directly
                     avatarPath = `<div class="avatarDisplay"><img src="${avatar}" alt="Profile Picture" width="45px" height="45px"></div>`;
                 } else if (avatar !== "") {

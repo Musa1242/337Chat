@@ -296,8 +296,9 @@ app.get("/app/getInfo/:user", (req, res) => {
 
 app.get('/app/search/:type/:keyword', (req, res) => {
     if(req.params.type == "Users"){
-        let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).populate('comingRequests').populate('outgoingRequests').populate('friends').exec();
+        let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).select('username gender avatar').populate('comingRequests').populate('outgoingRequests').populate('friends').exec();
         p.then((document) => {
+            console.log(document);
             res.json(document);
         });
     }
