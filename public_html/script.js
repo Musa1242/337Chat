@@ -145,7 +145,8 @@ function displayPostPreview() {
 function setPostPic() {
     console.log('setting post picture');
     document.getElementById("imgStatus").innerText = "";
-    let caption = document.getElementById("captionBox").innerText;
+    let caption = document.getElementById("captionBox").value;
+    console.log('caption: ', caption);
     let currTime = Date.now();
 
     if (document.getElementById("postImg").files.length == 0) {
@@ -165,7 +166,9 @@ function setPostPic() {
             document.getElementById("postImg").value = "";
         })
     }
-    window.location.href = '/app/home.html';
+    setTimeout(function(){
+        window.location.href = '/app/home.html';
+    }, 500);
 }
 
 function removeProfilePic() {
@@ -281,74 +284,98 @@ function searchUsers() {
             let information = JSON.parse(text);
             let element = document.getElementById('searchResults');
             element.innerHTML = "";
-            let string = '';
-            let flag = 0;
-            let username = getCookieValue('login');
-            //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
-            for(let i = 0; i < information.length; i++){
-                console.log('username check: ');
-                console.log(information[i].username);
-                console.log(username);
+            if (type == 'Users'){
+                let string = '';
+                let flag = 0;
+                let username = getCookieValue('login');
+                //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
+                for(let i = 0; i < information.length; i++){
+                    console.log('username check: ');
+                    console.log(information[i].username);
+                    console.log(username);
 
-                if (information[i].username != username){
-                    console.log('info: ', information[i]);
-                    let avatar1 = information[i].avatar;
-                    let avatarPath = "";
+                    if (information[i].username != username){
+                        let avatar1 = information[i].avatar;
+                        console.log(avatar1);
+                        let avatarPath = "";
 
-                    if (typeof avatar1 == 'undefined') {
-                        console.log('undefined');
-                        avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
-                    } else if (avatar1.startsWith("http")) {
-                        // If the path is a full URL, use it directly
-                        avatarPath = `<div class="avatarDisplay"><img src="${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
-                    } else if (avatar1 !== "") {
-                        // If it's a local path, prepend the necessary directory
-                        avatarPath = `<div class="avatarDisplay"><img src="../img/${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
-                    } else {
-                        // Default avatar if no path is provided
-                        avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
-                    }
+                        if (typeof avatar1 == 'undefined') {
+                            console.log('undefined');
+                            avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                        } else if (avatar1.startsWith("http")) {
+                            // If the path is a full URL, use it directly
+                            avatarPath = `<div class="avatarDisplay"><img src="${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                        } else if (avatar1 !== "") {
+                            // If it's a local path, prepend the necessary directory
+                            avatarPath = `<div class="avatarDisplay"><img src="../img/${avatar1}" alt="Profile Picture" width="45px" height="45px"></div>`;
+                        } else {
+                            // Default avatar if no path is provided
+                            avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
+                        }
 
-                    string += '<div class="outerUserSearchArea">'+ avatarPath +'<div class="usernameSearch">' + information[i].username + '</div>';
+                        string += '<div class="outerUserSearchArea">'+ avatarPath +'<div class="usernameSearch">' + information[i].username + '</div>';
 
-                    console.log(information[i].username, "USERNAME")
-                    console.log(information[i].outgoingRequests, "OUTGOING")
-                    console.log(information[i].comingRequests, "COMING")
-                    console.log();
+                        console.log(information[i].username, "USERNAME")
+                        console.log(information[i].outgoingRequests, "OUTGOING")
+                        console.log(information[i].comingRequests, "COMING")
+                        console.log();
 
-                    for(let j = 0; j < information[i].comingRequests.length; j++){
-                        //console.log(information[i].comingRequests[j].username == username);
-                        if(information[i].comingRequests[j].username == username) {
-                            string += '<p class="statusP">Waiting For Response</p></div>';
-                            console.log('1')
+                        for(let j = 0; j < information[i].comingRequests.length; j++){
+                            //console.log(information[i].comingRequests[j].username == username);
+                            if(information[i].comingRequests[j].username == username) {
+                                string += '<p class="statusP">Waiting For Response</p></div>';
+                                console.log('1')
+                                flag = 1;
+                            }
+                        }
+                        for(let j = 0; j < information[i].outgoingRequests.length; j++){
+                            if(information[i].outgoingRequests[j].username == username) {
+                                string += '<p class="statusP" >Request Recieved</p></div>';
+                                console.log('2')
+                                flag = 1;
+                            }
+                        }
+                        for(let j = 0; j < information[i].friends.length; j++){
+                            if(information[i].friends[j].username == username) {
+                                string += '<p class="statusP" >Already Friends</p></div>';
+                                flag = 1;
+                            }
+                        } 
+                        if(username == information[i].username){
                             flag = 1;
                         }
-                    }
-                    for(let j = 0; j < information[i].outgoingRequests.length; j++){
-                        if(information[i].outgoingRequests[j].username == username) {
-                            string += '<p class="statusP" >Request Recieved</p></div>';
-                            console.log('2')
-                            flag = 1;
+                        if(flag == 0) {
+                            console.log("ADD")
+                            string += `<div id="requestButton" class="friendReqButton"><input type="button" id="${information[i]._id}" value="Send Friend Request" onclick="sendFriendRequest('${information[i].username}')"></div></div>`
                         }
+                        
+                        element.innerHTML = string;
+                        flag = 0;
                     }
-                    for(let j = 0; j < information[i].friends.length; j++){
-                        if(information[i].friends[j].username == username) {
-                            string += '<p class="statusP" >Already Friends</p></div>';
-                            flag = 1;
-                        }
-                    } 
-                    if(username == information[i].username){
-                        flag = 1;
-                    }
-                    if(flag == 0) {
-                        console.log("ADD")
-                        string += `<div id="requestButton" class="friendReqButton"><input type="button" id="${information[i]._id}" value="Send Friend Request" onclick="sendFriendRequest('${information[i].username}')"></div></div>`
-                    }
-                    
-                    element.innerHTML = string;
-                    flag = 0;
                 }
+            } else {
+                let string = '';
+                let username = getCookieValue('login');
+
+                for(let i = 0; i < information.length; i++){
+                    let postUsername = information[i].username;
+                    let comments = information[i].comments;
+                    let caption = information[i].content;
+                    let image = information[i].image;
+
+                    console.log('info check: ', information[i]);
+
+                    // ready for similar implementation to putting in image as above,
+                    // create a post html type thing and put it within the section,
+                    // display all, and we are all set
+
+                    // maybe check that the username does not equal the posts username
+
+                    // eventually only show friends posts??
+                }
+
             }
+            
         }).catch((error) => {
             console.log("searching problem");
             console.log(error);
@@ -581,6 +608,10 @@ function directMessagePage() {
 
 function goFriends() {
     window.location.href = '/app/friends.html';
+}
+
+function goPost() {
+    window.location.href = '/app/post.html';
 }
 
 let currUser = "";

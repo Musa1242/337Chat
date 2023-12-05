@@ -31,12 +31,13 @@ var UserSchema = new Schema({
 });
 
 var User = mongoose.model('User', UserSchema);
-const Comment = new mongoose.model("comment", new mongoose.Schema(
-    {
-        username: String,
-        content: String,
-    }
-));
+
+var CommentSchema = new Schema({
+    username: String,
+    content: String
+});
+
+var Comment = mongoose.model('Comment', CommentSchema);
 
 
 const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will definitely add to this more as needed
@@ -228,7 +229,7 @@ app.post("/app/addPostImage", upload.single("image"), (req, res) => { ///needed 
     
     let newPost = new Post({
         username: req.cookies.login.username, 
-        caption: req.body.caption, 
+        content: req.body.caption, 
         time: req.body.currTime,
         image: req.file.filename
     });
@@ -323,7 +324,12 @@ app.get('/app/search/:type/:keyword', (req, res) => {
         });
     }
     else if (req.params.type == "Posts") {
-        let p = Post.find({ "content": { $regex: req.params.keyword, $options:"i"}}).exec();
+        let p = Post.find({
+            $or: [
+                {"content": { $regex: req.params.keyword, $options:"i"}},
+                {"username": { $regex: req.params.keyword, $options:"i"}}
+            ] 
+        }).select('username content image').populate('comments').exec();
         p.then((document) => {
             res.json(document);
         });
