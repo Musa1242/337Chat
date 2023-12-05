@@ -520,6 +520,40 @@ app.get("/app/customBoringAvatar", async (req, res) => {
     }
 });
 
+app.post('/add/comment', function(req, res) {
+
+    console.log('serverside add comment');
+    let postId = req.body.postId;
+    let userCommenting = req.body.username;
+    let commentIn = req.body.comment;
+    console.log('server commentIn: ', commentIn);
+
+    let p1 = Post.findById(postId).exec();
+    p1.then((post) => {
+        if (!post){
+            res.status(404).end('No post exists');
+            return;
+        }
+
+        let newComment = new Comment({
+            username: userCommenting, 
+            content: commentIn
+        })
+
+        return newComment.save().then((savedComment) => {
+            post.comments.push(savedComment._id);
+
+            return post.save();
+        });
+    })
+    .then(() => {
+        res.status(200).end('Comment added successfully!');
+    })
+    .catch((error) => {
+        console.error(error);
+        res.status(500).end('Error adding comment');
+    });
+});
 
 
 app.listen(port, () =>

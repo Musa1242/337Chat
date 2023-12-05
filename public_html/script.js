@@ -271,6 +271,37 @@ function getCookieValue(cookieName) {
     return null;
 }
 
+function addComment(postIdIn, usernameIn){
+    console.log('called add comment');
+    let commentArea = document.getElementById(postIdIn);
+    let commentIn = "";
+    if (commentIn == null){
+        alert('comment can not be null');
+        return;
+    } else {
+        commentIn = commentArea.value;
+    }
+
+    console.log('commentIn: ', commentIn);
+
+    let inputObject = {username : usernameIn, comment: commentIn, postId: postIdIn};
+    
+    let p = fetch('/add/comment/', { // change ip address
+        method: 'POST',
+        body: JSON.stringify(inputObject),
+        headers: { 'Content-Type': 'application/json'}
+    });
+    p.then((response) => {
+        return response.text();
+      }).then((text) => {
+        console.log(text);
+      });
+    
+    commentArea.value = "";
+    alert('Comment Added!');
+    location.reload();
+}
+
 function searchUsers() {    
     let username = document.getElementById('searchBox').value;
     let type = document.getElementById('searchType').value;
@@ -362,8 +393,53 @@ function searchUsers() {
                     let comments = information[i].comments;
                     let caption = information[i].content;
                     let image = information[i].image;
+                    let postId =information[i]._id;
 
                     console.log('info check: ', information[i]);
+
+                    if (username != postUsername){
+                        let commentString = '';
+                        for (let j = 0; j < comments.length; j++){
+                            commentString += `<div class="indCommentDisplay">`+ `<div class="commentsUserDisplay">` + comments[j].username + ' ' +`</div>` + `<div class="commentsContentDisplay">` + comments[j].content + `</div></div>`;
+                        }
+
+                        let htmlString = '';
+
+
+                        let addCommentSection = `<input type="text" class="commentText" id="`+ postId +`" name="commentText">`;
+
+                        addCommentSection += `<input type="button" class="commentButton" value="Add Comment" onclick="addComment(\'` + postId + `\', \'` + username + `\');">`;
+                        
+                        if (typeof image == 'undefined') {
+                            console.log('undefined');
+                            htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                            postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                            caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                            commentString +`</div>`+ addCommentSection +`</div>`;
+                        } else if (image.startsWith("http")) {
+                            // If the path is a full URL, use it directly
+                            htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                            postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                            caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                            commentString +`</div>`+ addCommentSection +`</div>`;
+                        } else if (image !== "") {
+                            // If it's a local path, prepend the necessary directory
+                            htmlString += `<div class="postDisplay"><div class="postImgDisplayDiv"><img src="../img/${image}" alt="Post Picture" width="300px" height="300px" class="postSearchImage"></div><div class="postUsernameDisplay">`+ 
+                            postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                            caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                            commentString +`</div>`+ addCommentSection +`</div>`;
+                        } else {
+                            // Default avatar if no path is provided
+                            htmlString += `<div class="postDisplay"><div class="postUsernameDisplay">`+ 
+                            postUsername + ' ' +`</div><div class="postCaptionDisplay">`+ 
+                            caption +`</div><div class="commentsDisplayLabel">Comments: </div><div class="postCommentsDisplay">`+ 
+                            commentString +`</div>`+ addCommentSection +`</div>`;
+                        }
+
+                        element.innerHTML += htmlString;
+                    }
+
+                    
 
                     // ready for similar implementation to putting in image as above,
                     // create a post html type thing and put it within the section,
