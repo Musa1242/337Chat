@@ -1,3 +1,17 @@
+/*
+Name: 337Chat Group: Seth, Mustafa, Musa, Kat
+Final Project
+
+This code is the server side JavaScript code for the
+337Chat web app. Using AJAX, the code specifies responses
+to both get requests and post requests. The code establishes
+a connection to a MongoDB database, and 4 new schemas. The code
+serves the public_html directory. There are a variety of get
+requests and post requests that handle a variety functions
+and operations throughout the web app, described further below.
+*/
+
+// Imports + uses
 const mongoose = require('mongoose');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -9,6 +23,7 @@ app.use(cookieParser());
 const multer = require("multer");
 const upload = multer( {dest: __dirname + '/public_html/img'} );
 
+// Connect to DB, establish Schemas
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
 mongoose.connect(mongoDBURL, {useNewUrlParser: true});
@@ -59,10 +74,17 @@ const DirectMessage = new mongoose.model("DM", new mongoose.Schema(
     }
 ));
 
+// Establish sessions - remove old sessions - check every 2 seconds
 let sessions = {};
 
 function addSession(username) {
-
+    /*
+        This function first creates a session ID. 
+        It then gets current date & time and saves this 
+        session into the global sessions dict.
+        The function returns the sessionID (sid) 
+        to be given the login handler.
+    */
     let sid = Math.floor(Math.random() * 1000000000);
     let now = Date.now();
     sessions[username] = {id: sid, time: now};
@@ -70,7 +92,11 @@ function addSession(username) {
 }
 
 function removeSessions() {
-
+    /*
+        This function gets the current date & time.
+        It then gets all usernames that have open sessions,
+        and delete all sessions that are older than 1 minute.
+    */
     let now = Date.now();
     let usernames = Object.keys(sessions);
     for (let i = 0; i < usernames.length; i++) {
@@ -82,10 +108,20 @@ function removeSessions() {
     }
 }
 
+// call remove sessions every 2 seconds
+    // checking if any sessions need to be removed...
 setInterval(removeSessions, 2000);
 
 function authenticate(req, res, next) {
-
+    /*
+        This function is used to ensure that the specific
+        user is allowed to access the specific page.
+        It checks that the user has a current session open
+        and that session username matches the session ID.
+        Otherwise, the user is redirected to the index.html
+        page. This is called for all paths beginning with
+        /app/.
+    */
     let c = req.cookies;
     console.log('auth request:');
     console.log(req.cookies);
@@ -121,6 +157,12 @@ app.get('/app/getUsername', function(req, res) {
 })
 
 app.post('/account/login/', function(req, res) {
+    /*
+        This function receives a post request, searching
+        for a user and checking the hashed and salted
+        password, logging in the user if the password is
+        correct through this process.
+    */
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
 
@@ -151,6 +193,10 @@ app.post('/account/login/', function(req, res) {
 });
 
 app.post("/logout", (req, res) => {
+    /*
+        Handles a simple post request to remove the current
+        session and thus log the user out.
+    */
     if (req.cookies.login != undefined) {
         delete sessions[req.cookies.login.username];
     }
@@ -159,6 +205,12 @@ app.post("/logout", (req, res) => {
 
 
 app.post('/add/user/', function(req, res) {
+    /*
+        Handles the post request to create a new user,
+        setting username and password, gender and avatar to
+        default, and creating a hash and salt for the user
+        to ensure security of future logins.
+    */
     let usernameIn = req.body.username;
     let passwordIn = req.body.password;
     let genderIn = req.body.gender || 'male'; // Set default gender to 'male'
@@ -193,6 +245,13 @@ app.post('/add/user/', function(req, res) {
 
 
 app.post("/app/avatar", upload.single("img"), (req, res) => { 
+    /*
+        This function handles two different types of post requests,
+        the first being to remove the avatar of the user
+        specified, and the second being to upload the avatar image
+        and make that the new avatar for the user. Note, this
+        uses 'multer'.
+    */
     if (req.file == undefined) {
         User.findOneAndUpdate(
             {username: req.cookies.login.username},
@@ -222,7 +281,10 @@ app.post("/app/avatar", upload.single("img"), (req, res) => {
 
 
 app.post("/app/addPostImage", upload.single("image"), (req, res) => { 
-    
+    /*
+        This function handles a post request to create a new post
+        for the user when the post contains an image.
+    */
     let newPost = new Post({
         username: req.cookies.login.username, 
         content: req.body.caption, 
@@ -239,7 +301,10 @@ app.post("/app/addPostImage", upload.single("image"), (req, res) => {
 });
 
 app.post("/app/addPostNoImage", upload.none(), (req, res) => {
-    
+    /*
+        This function handles a post request to create a new post
+        for the user when the post does not contain an image.
+    */
     let newPost = new Post({
         username: req.cookies.login.username, 
         content: req.body.caption, 
@@ -256,6 +321,10 @@ app.post("/app/addPostNoImage", upload.none(), (req, res) => {
 });
 
 app.get("/app/getProfilePic", (req, res) => {
+    /*
+        This function handles a get request that sends
+        the avatar of the current user.
+    */
     User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {
         if (response == null) {
@@ -269,6 +338,10 @@ app.get("/app/getProfilePic", (req, res) => {
 });
 
 app.get('/app/userInfo', (req, res) => {
+    /*
+        This function handles a get request to send username
+        and gender back to the client of the current user.
+    */
     let username = req.cookies.login?.username;
     if (!username) {
         console.log("No username in cookies");
@@ -293,6 +366,11 @@ app.get('/app/userInfo', (req, res) => {
 
 
 app.post('/app/updateProfile', function(req, res) {
+    /*
+        This function handles a post request to update
+        the profile, specifically updating the gender
+        of the user from the update profile page.
+    */
     const { gender } = req.body; 
     const username = req.cookies.login?.username;
 
@@ -315,13 +393,23 @@ app.post('/app/updateProfile', function(req, res) {
 
 
 app.get("/app/getFriends", (req, res) => {
+    /*
+        This function handles a simple get request to 
+        get the friends of the current user.
+    */
     User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {
         console.log(response.friends);
         res.send(response.friends);
     })
-})
+});
+
 app.get("/app/getInfo/:user", (req, res) => {
+    /*
+        This function handles the simple get request
+        to get all info about a specific user
+        specified within req params.
+    */
     User.findOne( {_id: req.params.user} )
     .then( (response) => {
         res.send(response);
@@ -329,6 +417,12 @@ app.get("/app/getInfo/:user", (req, res) => {
 });
 
 app.get('/app/search/:type/:keyword', (req, res) => {
+    /*
+        This function handles two different types of get request.
+        Each request is a search, either a substring seach of users
+        or of posts (by username or by caption). The function
+        sends back all results to the client.
+    */
     if(req.params.type == "Users"){
         let p = User.find({ "username": { $regex: req.params.keyword, $options:"i"}}).select('username gender avatar').populate('comingRequests').populate('outgoingRequests').populate('friends').exec();
         p.then((document) => {
@@ -350,6 +444,10 @@ app.get('/app/search/:type/:keyword', (req, res) => {
 });
 
 app.get('/app/getMyPosts/:USERNAME', (req, res) => {
+    /*
+        This function handles a simple get request to get
+        all posts of a specified user name in req params.
+    */
     let usernameIn = req.params.USERNAME;
 
     let p = Post.find({"username": usernameIn}).select('username content image').populate('comments').exec();
@@ -359,6 +457,11 @@ app.get('/app/getMyPosts/:USERNAME', (req, res) => {
 });
 
 app.get('/app/getFriendsPosts/:USERNAME', async (req, res) => {
+    /*
+        This asynchronous function handles a get requests to get all posts of
+        a specified users friends and order them by time, sending back all posts
+        in this order to the client.
+    */
     let usernameIn = req.params.USERNAME;
 
     try {
