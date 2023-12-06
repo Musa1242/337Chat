@@ -2,12 +2,7 @@ function addUser() {
 
     let username = document.getElementById('usernameCreate');
     let password = document.getElementById('passwordCreate');
-    //let errorText = document.getElementById('loginError');
-    //errorText.innerText = "";
 
-    // CREATE AVATAR FUNCTION??
-
-    // This will need to change to salt and hash, put in avatar, etc.
     let inputObject = {username : username.value, password : password.value};
     
     let p = fetch('http://127.0.0.1/add/user/', { // change ip address
@@ -35,7 +30,6 @@ function login() {
     errorText.innerText = "";
     gapText.innerText = "";
 
-    // change to implement hashing/salting
     let data = {username: us.value, password: pw.value};
     let p = fetch( '/account/login/', {
       method: 'POST', 
@@ -67,7 +61,6 @@ function logout() {
 }
 
 function getCurrUser() {
-    console.log('getting curr user');
     let url = '/app/getUsername';
     let p = fetch(url);
     p.then((response) => {
@@ -97,7 +90,7 @@ function fetchUserInfo() {
 }
 
 function setProfilePic() {
-    document.getElementById("imgStatus").innerText = ""; ///html reference, html needed
+    document.getElementById("imgStatus").innerText = "";
     if (document.getElementById("img").files.length == 0) {
         document.getElementById("imgStatus").innerText = "Cannot leave field empty";
     }
@@ -116,7 +109,6 @@ function setProfilePic() {
         })
     }
 }
-
 
 
 function displayPostPreview() {
@@ -143,19 +135,15 @@ function displayPostPreview() {
   }
 
 function setPostPic() {
-    console.log('setting post picture');
     document.getElementById("imgStatus").innerText = "";
     let caption = document.getElementById("captionBox").value;
-    console.log('caption: ', caption);
     let currTime = Date.now();
 
     if (document.getElementById("postImg").files.length == 0) {
-        console.log('in here client');
         
         let formDataNoImg = new FormData();
         formDataNoImg.append("caption", caption);
         formDataNoImg.append("currTime", currTime);
-        console.log('form data: ', formDataNoImg);
         let url = "/app/addPostNoImage";
         fetch(url,
             {
@@ -180,13 +168,13 @@ function setPostPic() {
             document.getElementById("postImg").value = "";
         })
     }
-    //setTimeout(function(){
-        //window.location.href = '/app/home.html';
-    //}, 500);
+    setTimeout(function(){
+        window.location.href = '/app/home.html';
+    }, 500);
 }
 
 function removeProfilePic() {
-    document.getElementById("img").value = ""; ///html reference, html needed
+    document.getElementById("img").value = "";
     let formData = new FormData();
     formData.append("img", document.getElementById("img").files[0]);
     let url = "/app/avatar";
@@ -239,7 +227,7 @@ function getFriends() {
     let url = "/app/getFriends";
     fetch(url)
     .then( (response) => {
-        return response.json(); //return the json and get the array of friends in the next block
+        return response.json();
     })
     .then( (response) => {
         for (i in response) {
@@ -264,7 +252,6 @@ function getCookieValue(cookieName) {
       if (name === cookieName) {
         let decodedValue = decodeURIComponent(value);
         
-        // Handle the "j:" prefix
         if (decodedValue.startsWith('j:')) {
           decodedValue = decodedValue.substring(2);
         }
@@ -274,7 +261,7 @@ function getCookieValue(cookieName) {
           if (jsonValue && jsonValue.username) {
             return jsonValue.username;
           } else {
-            return null; // Username not found in the JSON or JSON is invalid
+            return null;
           }
         } catch (error) {
           console.error('Error parsing JSON from cookie:', error);
@@ -286,7 +273,6 @@ function getCookieValue(cookieName) {
 }
 
 function addComment(postIdIn, usernameIn){
-    console.log('called add comment');
     let commentArea = document.getElementById(postIdIn);
     let commentIn = "";
     if (commentIn == null){
@@ -296,11 +282,9 @@ function addComment(postIdIn, usernameIn){
         commentIn = commentArea.value;
     }
 
-    console.log('commentIn: ', commentIn);
-
     let inputObject = {username : usernameIn, comment: commentIn, postId: postIdIn};
     
-    let p = fetch('/add/comment/', { // change ip address
+    let p = fetch('/add/comment/', { 
         method: 'POST',
         body: JSON.stringify(inputObject),
         headers: { 'Content-Type': 'application/json'}
@@ -333,15 +317,10 @@ function searchUsers() {
                 let string = '';
                 let flag = 0;
                 let username = getCookieValue('login');
-                //let username = JSON.parse(decodeURIComponent(document.cookie).replace("login=j:", '')).username;
                 for(let i = 0; i < information.length; i++){
-                    console.log('username check: ');
-                    console.log(information[i].username);
-                    console.log(username);
 
                     if (information[i].username != username){
                         let avatar1 = information[i].avatar;
-                        console.log(avatar1);
                         let avatarPath = "";
 
                         if (typeof avatar1 == 'undefined') {
@@ -366,17 +345,14 @@ function searchUsers() {
                         console.log();
 
                         for(let j = 0; j < information[i].comingRequests.length; j++){
-                            //console.log(information[i].comingRequests[j].username == username);
                             if(information[i].comingRequests[j].username == username) {
                                 string += '<p class="statusP">Waiting For Response</p></div>';
-                                console.log('1')
                                 flag = 1;
                             }
                         }
                         for(let j = 0; j < information[i].outgoingRequests.length; j++){
                             if(information[i].outgoingRequests[j].username == username) {
                                 string += '<p class="statusP" >Request Recieved</p></div>';
-                                console.log('2')
                                 flag = 1;
                             }
                         }
@@ -408,8 +384,6 @@ function searchUsers() {
                     let caption = information[i].content;
                     let image = information[i].image;
                     let postId =information[i]._id;
-
-                    console.log('info check: ', information[i]);
 
                     if (username != postUsername){
                         let commentString = '';
@@ -452,18 +426,7 @@ function searchUsers() {
 
                         element.innerHTML += htmlString;
                     }
-
-                    
-
-                    // ready for similar implementation to putting in image as above,
-                    // create a post html type thing and put it within the section,
-                    // display all, and we are all set
-
-                    // maybe check that the username does not equal the posts username
-
-                    // eventually only show friends posts??
                 }
-
             }
             
         }).catch((error) => {
@@ -478,7 +441,6 @@ function sendFriendRequest(username) {
         return response.text();
     }).then((text) => {
         if(text == 'Success'){
-            console.log("reached")
             document.getElementById('requestButton').innerHTML = 'Sent'
             window.location.href = './friends.html'
         }
@@ -507,15 +469,12 @@ function addFriend(username) {
 
 function displayFriends() {
     let url = '/app/get/friends';
-    console.log('1');
     fetch(url)
         .then((response) => {
-            console.log('2');
             console.log(response)
             return response.json();
         })
         .then((information) => {
-            console.log('3');
             let friends = document.getElementById('friends');
             let friendRequests = document.getElementById('friendRequests');
             console.log(information);
@@ -524,7 +483,6 @@ function displayFriends() {
             let requestString = '';
 
             for(let i = 0; i < information.friends.length; i++){
-                console.log(information.friends[i].username);
                 let avatar = information.friends[i].avatar;
                 let avatarPath = "";
 
@@ -544,7 +502,6 @@ function displayFriends() {
                 friendString += '<div class="displayFriendsOutConsole">'+ avatarPath +'<div class="displayFriendsText">' + information.friends[i].username + '</div></div>';
             }
             for(let i= 0; i < information.comingRequests.length; i++) {
-                console.log(information.comingRequests[i]._id);
 
                 let avatar = information.comingRequests[i].avatar;
                 let avatarPath = "";
@@ -562,15 +519,11 @@ function displayFriends() {
                     avatarPath = `<div class="avatarDisplay"><img src='../img/default.jpg' alt='Default Profile Picture' width='45px' height='45px'></div>`;
                 }
 
-                requestString += '<div class="displayFriendReqOutConsole">'+ avatarPath +'<div class="displayFriendRequestText">' + information.comingRequests[i].username + '</div>' + `<div><input class="acceptFriendButton" type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div></div>`
-                
-                //'<div><input type="button" id="' + information[i]._id +'" value="Accept Friend" onclick="addFriend("'+ information[i].username+ '");></div>'
-                //`</div><div><input type="button" id="${information[i]._id}" value="Accept Friend Request" onclick="addFriend('${information[i].username}')"></div>`;
+                requestString += '<div class="displayFriendReqOutConsole">'+ avatarPath +'<div class="displayFriendRequestText">' + information.comingRequests[i].username + '</div>' + `<div><input class="acceptFriendButton" type="button" id="${information.comingRequests[i]._id}" value="Add Friend" onclick="addFriend('${information.comingRequests[i].username}')"></div></div>`;
             }
 
-            friends.innerHTML = friendString
-            friendRequests.innerHTML = requestString
-            
+            friends.innerHTML = friendString;
+            friendRequests.innerHTML = requestString;
 
         }).catch((error) => {
             console.log(error)
@@ -590,7 +543,6 @@ function setDmDropdown() {
         return response.json();
     })
     .then( (friendUsernames => {
-        console.log('Friend Usernames: ', friendUsernames);
         dropdownString = '<option value="null" selected>Choose a Friend to Chat!</option>'
         for (let i=0; i<friendUsernames.length;i++){
             dropdownString += '<option value="' + friendUsernames[i] + '">' + friendUsernames[i] +'</option>';
@@ -808,7 +760,6 @@ function displayMyPosts(){
             let postId = information[i]._id;
             let username = getCookieValue('login');
 
-            console.log('info check displayMyPosts: ', information[i]);
 
             let commentString = '';
             for (let j = 0; j < comments.length; j++){
@@ -859,7 +810,6 @@ function displayMyPosts(){
 
 function displayFriendsPosts(){
 
-    console.log('trying to display friends');
     let username = getCookieValue('login');
 
     let url = '/app/getFriendsPosts/' + username
@@ -873,8 +823,6 @@ function displayFriendsPosts(){
         let element = document.getElementById("friendPostsInnerArea");
         element.innerHTML = "";
 
-        console.log('information: ', information);
-
         for(let i = 0; i < information.length; i++){
             let postUsername = information[i].username;
             let image = information[i].image;
@@ -882,8 +830,6 @@ function displayFriendsPosts(){
             let comments = information[i].comments;
             let postId = information[i]._id;
             let username = getCookieValue('login');
-
-            console.log('info check displayFriendsPosts: ', information[i]);
 
             let commentString = '';
             for (let j = 0; j < comments.length; j++){
@@ -943,8 +889,6 @@ function updateUserInfo() {
     .then((text) => {
 
         let information = JSON.parse(text);
-
-        console.log('user info: ', information);
 
         let genderIn = information.gender;
         let postCount = information.postsCount;

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const fs = require('fs');
 const crypto = require('crypto');
 const port = 80;
 const app = express()
@@ -9,7 +8,6 @@ app.use(express.json());
 app.use(cookieParser());
 const multer = require("multer");
 const upload = multer( {dest: __dirname + '/public_html/img'} );
-//const fetch = require('node-fetch');
 
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
@@ -21,13 +19,12 @@ var UserSchema = new Schema({
     username: String,
     hash: String,
     salt: Number,
-    avatar: String, // change if needed
+    avatar: String,
     gender: String,
     outgoingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     comingRequests: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     posts: [mongoose.Schema.Types.ObjectId]
-    //age: Number, if needed
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -40,7 +37,7 @@ var CommentSchema = new Schema({
 var Comment = mongoose.model('Comment', CommentSchema);
 
 
-const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will definitely add to this more as needed
+const Post = new mongoose.model("post", new mongoose.Schema(
     {
         username: String,
         time: Number,
@@ -51,6 +48,7 @@ const Post = new mongoose.model("post", new mongoose.Schema( //user schema, will
         posts: [mongoose.Schema.Types.ObjectId]
     }
 ));
+
 const DirectMessage = new mongoose.model("DM", new mongoose.Schema(
     {
         time: Number,
@@ -85,8 +83,6 @@ function removeSessions() {
 }
 
 setInterval(removeSessions, 2000);
-
-
 
 function authenticate(req, res, next) {
 
@@ -143,7 +139,7 @@ app.post('/account/login/', function(req, res) {
                 let sid = addSession(usernameIn);
             res.cookie("login", 
                 {username: usernameIn, sessionID: sid},
-                {maxAge: 600000 * 1}); // create a new cookie with 2 minutes life
+                {maxAge: 600000 * 1}); // create a new cookie
             res.end('SUCCESS');
             console.log('Logged in');
             } else {
@@ -196,7 +192,7 @@ app.post('/add/user/', function(req, res) {
 });
 
 
-app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html reference
+app.post("/app/avatar", upload.single("img"), (req, res) => { 
     if (req.file == undefined) {
         User.findOneAndUpdate(
             {username: req.cookies.login.username},
@@ -225,7 +221,7 @@ app.post("/app/avatar", upload.single("img"), (req, res) => { ///needed to html 
 
 
 
-app.post("/app/addPostImage", upload.single("image"), (req, res) => { ///needed to html reference
+app.post("/app/addPostImage", upload.single("image"), (req, res) => { 
     
     let newPost = new Post({
         username: req.cookies.login.username, 
@@ -244,17 +240,12 @@ app.post("/app/addPostImage", upload.single("image"), (req, res) => { ///needed 
 
 app.post("/app/addPostNoImage", upload.none(), (req, res) => {
     
-    console.log('here server side');
-    console.log('req body: ', req.body);
-    
     let newPost = new Post({
         username: req.cookies.login.username, 
         content: req.body.caption, 
         time: req.body.currTime,
         image: undefined
     });
-
-    console.log(newPost.content);
     
     let p = newPost.save();
     p.then(() => {
@@ -370,8 +361,6 @@ app.get('/app/getMyPosts/:USERNAME', (req, res) => {
 app.get('/app/getFriendsPosts/:USERNAME', async (req, res) => {
     let usernameIn = req.params.USERNAME;
 
-    console.log('server trying to display friend');
-
     try {
         let usernameIn = req.params.USERNAME;
     
@@ -448,7 +437,6 @@ app.get('/app/friendRequest/:username', function(req, res){
 });
 
 app.get('/app/get/friends', function(req, res) {
-    console.log('22')
     let information = {};
     information.friends = [];
     information.comingRequests = [];
@@ -467,19 +455,15 @@ app.get('/app/get/friends', function(req, res) {
                 max = 'c';
             }
 
-            console.log("1 server")
             console.log(document[0].friends.length)
             for(let i = 0; i < document[0].friends.length; i++){
-                console.log('4 servrer')
                 User.findOne({_id: new mongoose.Types.ObjectId(document[0].friends[i])}).select('username gender avatar').exec()
                 
                 .then((response) => {
                     if(response) {
-                        console.log("2 server")
                         information.friends.push(response);
                     }
                     if(i == document[0].friends.length-1 && max == 'f'){
-                        console.log("3 server")
                         res.json(information)
                         
                     }   
@@ -578,11 +562,9 @@ app.get("/app/customBoringAvatar", async (req, res) => {
 
 app.post('/add/comment', function(req, res) {
 
-    console.log('serverside add comment');
     let postId = req.body.postId;
     let userCommenting = req.body.username;
     let commentIn = req.body.comment;
-    console.log('server commentIn: ', commentIn);
 
     let p1 = Post.findById(postId).exec();
     p1.then((post) => {
