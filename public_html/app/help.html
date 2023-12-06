@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>337chat</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="../style.css">
+    </head>
+    <body>
+        <div id="dmTitleArea">
+            <img src="../337Chat_logo_nobackground.png" alt="337chat Logo" id="dmLogo">
+            <div id="dmTitle">Help</div>
+        </div>
+        <div id="mainConsoleDm" class="helpBig">
+            <div id="chatAreaDm" class="helpArea">
+                <p>Welcome to 337Chat!</p>
+                <p>By now, you have figured out how to create an account and login. Let us go over other features.</p>
+                <p>On the home page, you can view your logo, information about your profile 
+                    (click update profile to update details)
+                     and browse your posts and your friends’ posts.
+                     You may comment on posts at the bottom of each post section.</p>
+                <p>
+                    A nav-bar is featured at the bottom of each page to navigate to different pages.
+                </p>
+                <p>
+                    Navigating to update profile allows you to change details about your profile. 
+                    You can change your gender and change your profile picture. 
+                    There are two options for profile pictures. 
+                    You can either chose a file and press submit, and navigate to home to view 
+                    your change, or, you can create a custom avatar by selecting an avatar variant, 
+                    and avatar colors, and selecting Create Custom Avatar, then Submit, then navigate
+                     to home to see your changes. You can also remove your current avatar on this page.
+                </p>
+                <p>
+                    Navigating to search, you can substring search for either users or posts.
+                     Searching for users pops up all users with that substring in their username. 
+                     You can request to follow a user, and it will go through as a friend request for that user. 
+                     Searching for posts, you can search by substring into the caption or username of who posted. 
+                     Similarly to home, you can comment on users posts here. You will not see your own posts pop up here.
+                </p>
+                <p>
+                    Navigating to friends, you can view your friends list, as well as a list of friend requests for you, 
+                    of which you can chose to accept and that user will become your friend.
+                </p>
+                <p>
+                    Direct messages allows you to chat with friends. You must pick one of your friends 
+                    (must have friends to use) from the dropdown, and begin chatting with them with the text console below.
+                </p>
+                <p>
+                    Finally, you may press logout to logout of your account.
+                </p>
+                <p>
+                    Thank you for visiting 337Chat Help!
+                </p>
+            </div>
+        </div>
+        <div id="navArea">
+            <button type="button" class="navButton" onclick="goHome();">Home</button>
+            <button type="button" class="navButton" onclick="search();">Search</button>
+            <button type="button" class="navButton" onclick="goPost();">Post</button>
+            <button type="button" class="navButton" onclick="goFriends();">Friends</button>
+            <button type="button" class="navButton" onclick="directMessagePage();">DM's</button>
+            <button type="button" class="navButton" onclick="goHelp();">Help</button>
+            <button type="button" class="navButton" onclick="logout();">Logout</button>
+        </div>
+        <script src="../script.js"></script>
+    </body>
+</html>

@@ -517,3 +517,11 @@ img {
 .commentText {
     width: 200px;
 }
+
+.helpBig{
+    padding-top: 30px;
+}
+
+.helpArea {
+    margin-top: 30px;
+}

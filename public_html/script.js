@@ -708,6 +708,10 @@ function goUpdate() {
     window.location.href = '/app/update_profile.html';
 }
 
+function goHelp() {
+    window.location.href = '/app/help.html';
+}
+
 function updateUsernameHome() {
     let userArea = document.getElementById("username");
 
