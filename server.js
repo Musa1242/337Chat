@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 const multer = require("multer");
 const upload = multer( {dest: __dirname + '/public_html/img'} );
-
+const boringAvatar = require('boring-avatars')
 // Connect to DB, establish Schemas
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1/337chat';
