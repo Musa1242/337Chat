@@ -242,6 +242,28 @@ app.post("/app/addPostImage", upload.single("image"), (req, res) => { ///needed 
     });
 });
 
+app.post("/app/addPostNoImage", upload.none(), (req, res) => {
+    
+    console.log('here server side');
+    console.log('req body: ', req.body);
+    
+    let newPost = new Post({
+        username: req.cookies.login.username, 
+        content: req.body.caption, 
+        time: req.body.currTime,
+        image: undefined
+    });
+
+    console.log(newPost.content);
+    
+    let p = newPost.save();
+    p.then(() => {
+        res.end('POST CREATED!');
+    }).catch(() => {
+        res.end('DATABASE SAVE ISSUE');
+    });
+});
+
 app.get("/app/getProfilePic", (req, res) => {
     User.findOne( {username: req.cookies.login.username} )
     .then( (response) => {

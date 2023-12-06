@@ -150,7 +150,21 @@ function setPostPic() {
     let currTime = Date.now();
 
     if (document.getElementById("postImg").files.length == 0) {
-        document.getElementById("imgStatus").innerText = "Cannot leave field empty";
+        console.log('in here client');
+        
+        let formDataNoImg = new FormData();
+        formDataNoImg.append("caption", caption);
+        formDataNoImg.append("currTime", currTime);
+        console.log('form data: ', formDataNoImg);
+        let url = "/app/addPostNoImage";
+        fetch(url,
+            {
+                method: "POST",
+                body: formDataNoImg
+            })
+        .then( (response) => {
+            document.getElementById("postImg").value = "";
+        })
     } else {
         let formData = new FormData();
         formData.append("image", document.getElementById("postImg").files[0]);
@@ -166,9 +180,9 @@ function setPostPic() {
             document.getElementById("postImg").value = "";
         })
     }
-    setTimeout(function(){
-        window.location.href = '/app/home.html';
-    }, 500);
+    //setTimeout(function(){
+        //window.location.href = '/app/home.html';
+    //}, 500);
 }
 
 function removeProfilePic() {
