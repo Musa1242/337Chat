@@ -486,6 +486,10 @@ app.get('/app/getFriendsPosts/:USERNAME', async (req, res) => {
 });
 
 app.get('/app/addFriend/:username/', function(req, res) {
+    /*
+        This function responds to a get request to add a friend
+        to the current User's friend list.
+    */
     let p = User.find({"username": req.params.username}).exec();
     p.then((document) => {
         if(document.length == 0){
@@ -513,6 +517,11 @@ app.get('/app/addFriend/:username/', function(req, res) {
 });
 
 app.get('/app/friendRequest/:username', function(req, res){
+    /*
+        This function responds to a get request to send a friend
+        request to a specific username from the current users
+        profile.
+    */
     let loggedUser = req.cookies.login.username;
     let p = User.find({"username": req.params.username}).exec();
     p.then((document) => {
@@ -540,6 +549,11 @@ app.get('/app/friendRequest/:username', function(req, res){
 });
 
 app.get('/app/get/friends', function(req, res) {
+    /*
+        This function responds to a get request to
+        get all friends and incoming friend requests
+        for a specific user.
+    */
     let information = {};
     information.friends = [];
     information.comingRequests = [];
@@ -592,6 +606,11 @@ app.get('/app/get/friends', function(req, res) {
 
 
 app.get('/app/getFriendsUsernames', function(req, res) {
+    /*
+        This function gets the usernames of all
+        of the current user's friends and sends them
+        to the client.
+    */
     let p = User.findOne({ username: req.cookies.login.username })
     p.then((response) => {
         let friendIds = response.friends;
@@ -618,6 +637,11 @@ app.get('/app/getFriendsUsernames', function(req, res) {
 });
 
 app.get('/app/getDms/:RECIPIENT', function(req, res) {
+    /*
+        This function responds to a get request to get
+        all direct messages by a specified recipient
+        parameter in req params.
+    */
     recipientIn = req.params.RECIPIENT;
     let userIn = req.cookies.login.username;
 
@@ -634,6 +658,10 @@ app.get('/app/getDms/:RECIPIENT', function(req, res) {
 });
 
 app.post('/app/dms/post', function(req, res) {
+    /*
+        This function responds to the post request to
+        create a new direct message.
+    */
     let userIn = req.cookies.login.username;
     let timeIn = req.body.time;
     let recipientIn = req.body.recipient;
@@ -646,9 +674,12 @@ app.post('/app/dms/post', function(req, res) {
 });
 
 
-
-
 app.get("/app/customBoringAvatar", async (req, res) => {
+    /*
+        This function responds to a get request using the source.boringavatars API
+        to create an avatar based on specified type and colors in the
+        create avatar section of update profile, and sends the avatar url.
+    */
     const uname = req.cookies.login.username;
     const variant = req.query.variant || "marble";
     const colors = req.query.colors || "264653,2a9d8f,e9c46a,f4a261,e76f51";
@@ -664,6 +695,10 @@ app.get("/app/customBoringAvatar", async (req, res) => {
 });
 
 app.post('/add/comment', function(req, res) {
+    /*
+        This function responds to a post request to add
+        a comment to the post specified in the body of the request.
+    */
 
     let postId = req.body.postId;
     let userCommenting = req.body.username;
@@ -697,6 +732,11 @@ app.post('/add/comment', function(req, res) {
 });
 
 app.get('/app/getUserCounts/:USERNAME', async (req, res) => {
+    /*
+        This function responds to a get request to send to the
+        client the number of friends, number of posts, and gender
+        of the current user for the home page.
+    */
     try {
         let username = req.params.USERNAME;
     

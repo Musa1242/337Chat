@@ -1,4 +1,20 @@
+/*
+Name: 337Chat Group: Seth, Mustafa, Musa, Kat
+Final Project
+
+This code is the client side JavaScript code for the pages
+within the 337chat web app. The code contains 
+a large variety of functions, that allow for interaction of
+users with the social media app, mostly using fetch API
+to make requests to the server.
+*/
+
 function addUser() {
+    /*
+        This function sends a post request to the server
+        to create a new user with the information in specified
+        username and password fields.
+    */
 
     let username = document.getElementById('usernameCreate');
     let password = document.getElementById('passwordCreate');
@@ -22,6 +38,11 @@ function addUser() {
 }
 
 function login() {
+    /*
+        This function sends a post request to the server
+        containing the username and password in the login fields,
+        redirecting the page to home if the login is successful.
+    */
 
     let us = document.getElementById('usernameLogin');
     let pw = document.getElementById('passwordLogin');
@@ -52,6 +73,10 @@ function login() {
   }
 
 function logout() {
+    /*
+        This function sends a post request to logout
+        the current user.
+    */
     let url = "/logout";
     fetch(url, 
         {
@@ -61,6 +86,11 @@ function logout() {
 }
 
 function getCurrUser() {
+    /*
+        This function sends a get
+        request to the server to get the username
+        of the current user.
+    */
     let url = '/app/getUsername';
     let p = fetch(url);
     p.then((response) => {
@@ -75,6 +105,10 @@ function getCurrUser() {
 }
 
 function fetchUserInfo() {
+    /*
+        This function sends a get request to the server to get the
+        username and gender of the current user.
+    */
     fetch('/app/userInfo')
     .then(response => {
         if (!response.ok) {
@@ -90,6 +124,11 @@ function fetchUserInfo() {
 }
 
 function setProfilePic() {
+    /*
+        This function uses a post request to the server to send
+        a new form request object containing the specified avatar,
+        setting this avatar as the users new avatar.
+    */
     document.getElementById("imgStatus").innerText = "";
     if (document.getElementById("img").files.length == 0) {
         document.getElementById("imgStatus").innerText = "Cannot leave field empty";
@@ -112,6 +151,11 @@ function setProfilePic() {
 
 
 function displayPostPreview() {
+    /*
+        This function displays the image for a post in post.html
+        before the post is uploaded as a post
+        using a new filereader object.
+    */
     let fileInput = document.getElementById('postImg');
     let imagePreview = document.getElementById('postImgArea');
     let imageStatus = document.getElementById('imgStatus');
@@ -135,6 +179,11 @@ function displayPostPreview() {
   }
 
 function setPostPic() {
+    /*
+        This function uses a new form data object to send a new get
+        request to the server, posting the time, caption, image, and user
+        posting a new image, creating a new Post object in the server.
+    */
     document.getElementById("imgStatus").innerText = "";
     let caption = document.getElementById("captionBox").value;
     let currTime = Date.now();
@@ -174,6 +223,10 @@ function setPostPic() {
 }
 
 function removeProfilePic() {
+    /*
+        This function sends a get request to the server
+        to remove the current users current profile picture.
+    */
     document.getElementById("img").value = "";
     let formData = new FormData();
     formData.append("img", document.getElementById("img").files[0]);
@@ -190,6 +243,10 @@ function removeProfilePic() {
 
 
 function updateProfile() {
+    /*
+        This function sends a post request to the user to update
+        the user's profile with new information from update_profile.html.
+    */
     const gender = document.getElementById('gender').value;
 
     fetch('/app/updateProfile', {
@@ -224,6 +281,10 @@ function changeProfile() { //open update profile
 }
 
 function getFriends() {
+    /*
+        This function sends a get request to the server
+        to get all friends of the current user.
+    */
     let url = "/app/getFriends";
     fetch(url)
     .then( (response) => {
@@ -244,6 +305,10 @@ function getFriends() {
 }
 
 function getCookieValue(cookieName) {
+    /*
+        This function gets the value of a specified cookie
+        name by searching through the current cookies that exist.
+    */
     const cookies = document.cookie.split(';');
     
     for (const cookie of cookies) {
@@ -273,6 +338,10 @@ function getCookieValue(cookieName) {
 }
 
 function addComment(postIdIn, usernameIn){
+    /*
+        This function sends a post request to create a new comment on a specified
+        post, sending this request to the server.
+    */
     let commentArea = document.getElementById(postIdIn);
     let commentIn = "";
     if (commentIn == null){
@@ -300,7 +369,12 @@ function addComment(postIdIn, usernameIn){
     location.reload();
 }
 
-function searchUsers() {    
+function searchUsers() {  
+    /* 
+        This function can send two types of get requests to the user,
+        one searching for users, another searching for posts, and displays
+        the respective search results on the search.html page.
+    */
     let username = document.getElementById('searchBox').value;
     let type = document.getElementById('searchType').value;
     let url = '/app/search/' + type + "/" + username;
@@ -436,6 +510,10 @@ function searchUsers() {
 }
 
 function sendFriendRequest(username) {
+    /* 
+        This function sends a get request to the server which
+        sends a friend request to a specified user.
+    */
     let url = '/app/friendRequest/' + username
     fetch(url).then((response) =>{
         return response.text();
@@ -454,6 +532,10 @@ function sendFriendRequest(username) {
 }
 
 function addFriend(username) {
+    /*
+        This function sends a get request to the server that
+        indicates the adding of a specified user.
+    */
     let url = '/app/addFriend/' + username;
 
     fetch(url)
@@ -468,6 +550,11 @@ function addFriend(username) {
 }
 
 function displayFriends() {
+    /*
+        This function sends a get request to the server to get
+        all friends and friend requests to the server, placing
+        these in html of the friends.html page.
+    */
     let url = '/app/get/friends';
     fetch(url)
         .then((response) => {
@@ -531,6 +618,11 @@ function displayFriends() {
 }
 
 function setDmDropdown() {
+    /*
+        This function sends a get request to the server to get a list
+        of the current user's friends, then places these in the dropdown
+        of dm.html's user dropdown.
+    */
     let dropdown = document.getElementById('selectUserDm');
     let username = getCookieValue('login');
     let dropdownString = '';
@@ -555,6 +647,11 @@ function setDmDropdown() {
 }
 
 function getDms() {
+    /*
+        This function sends a get request to the server to 
+        get all dms of specified recipient and current user,
+        and displays those DMS in html on dm.html.
+    */
     let recipientIn = document.getElementById('selectUserDm');
     let chatArea = document.getElementById('chatAreaDm');
 
@@ -608,6 +705,10 @@ function getDms() {
 }
 
 function postDm() {
+    /*
+        This function sends a post request to the server to create
+        a new DM between the current user and selected recipient.
+    */
     let recipientIn = document.getElementById('selectUserDm');
     let messageIn = document.getElementById('messageBox');
     let currTime = Date.now();
@@ -640,31 +741,35 @@ function postDm() {
     messageIn.value = "";
 }
 
-function search() {
+function search() { // change page to search.html
     window.location.href = '/app/search.html';
 }
 
-function directMessagePage() {
+function directMessagePage() { // change page to dm.html
     window.location.href = '/app/dm.html';
 }
 
-function goFriends() {
+function goFriends() { // change page to friends.html
     window.location.href = '/app/friends.html';
 }
 
-function goPost() {
+function goPost() { // change page to post.html
     window.location.href = '/app/post.html';
 }
 
-function goUpdate() {
+function goUpdate() { // change page to update_profile.html
     window.location.href = '/app/update_profile.html';
 }
 
-function goHelp() {
+function goHelp() { // changes page to help.html
     window.location.href = '/app/help.html';
 }
 
 function updateUsernameHome() {
+    /*
+        This function updates the username displayed
+        on home.html to the current user's username.
+    */
     let userArea = document.getElementById("username");
 
     let username = getCookieValue('login');
@@ -687,7 +792,12 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function fetchProfilePic() { 
+function fetchProfilePic() {
+    /*
+        This function sends a get request to the server,
+        receiving the avatar image string, and displaying the
+        image properly embedded within html.
+    */
     document.getElementById("avatar").innerHTML = "";
     let url = "/app/getProfilePic";
     fetch(url)
@@ -713,6 +823,11 @@ function fetchProfilePic() {
 
 
 function createCustomBoringAvatar() {
+    /*
+        This function sends a get request to the server
+        to create a custom 'boring avatar' through the API and specified
+        variant and colors.
+    */
     const variant = document.getElementById('avatarVariant').value;
     const colors = [
         document.getElementById('color1').value.substring(1),
@@ -739,6 +854,11 @@ function createCustomBoringAvatar() {
 }
 
 function displayMyPosts(){
+    /*
+        This function sends a get request to the server to
+        get all posts of the current user and display them on
+        home.html by creating html.
+    */
     let username = getCookieValue('login');
 
     let url = '/app/getMyPosts/' + username
@@ -809,6 +929,11 @@ function displayMyPosts(){
 
 
 function displayFriendsPosts(){
+    /*
+        This function sends a get request to the server to get
+        all posts of friends of the current user and display them
+        in home.html by building up html code.
+    */
 
     let username = getCookieValue('login');
 
@@ -878,6 +1003,11 @@ function displayFriendsPosts(){
 }
 
 function updateUserInfo() {
+    /*
+        This function sends a get request to the server to get
+        current user information, displaying this info in the
+        profile section of the home.html page.
+    */
     let username = getCookieValue('login');
 
     let url = '/app/getUserCounts/' + username;
